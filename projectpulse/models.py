@@ -46,7 +46,7 @@ class Task(models.Model):
     ], default='not_started')
 
     # Task dependencies
-    requirements = models.ManyToManyField('self', blank=True, related_name='requirements', symmetrical=False)
+    requirements = models.ManyToManyField('self', blank=True, related_name='waited_on', symmetrical=False)
 
     # Custom fields
     custom_fields = models.JSONField(default=dict, blank=True, null=True)
