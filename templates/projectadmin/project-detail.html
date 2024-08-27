@@ -87,12 +87,15 @@
 
             <div class="card text-dark mb-3">
                 <div class="card-header">
-                    <h5 class="card-title">Members</h5>
+                    <h5 class="card-title">Permissions</h5>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
                         <label for="project-owner">Owner</label>
-                        <input class="form-control" name="project-owner" id="project-owner" value="@{{ PROJECT.owner.username }} {% if PROJECT.owner.first_name %}({{ PROJECT.owner.first_name }} {{ PROJECT.owner.last_name }}){% endif %}" disabled="disabled" />
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="project-owner-tag">@</span>
+                            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="project-owner-tag" name="project-owner" id="project-owner" value="{{ PROJECT.owner.username }} {% if PROJECT.owner.first_name %}({{ PROJECT.owner.first_name }} {{ PROJECT.owner.last_name }}){% endif %}" disabled="disabled"/>
+                        </div>
                     </div>
                 </div>
             </div>
