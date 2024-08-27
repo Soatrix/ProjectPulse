@@ -51,7 +51,7 @@
                         <label for="project-start-date">Project Started</label>
                         <input class="form-control" name="project-start-date" id="project-start-date" value="{{ PROJECT.start_date }}" disabled="disabled" />
                     </div>
-                    {% if project.end_date or project.status == "completed" %}
+                    {% if project.status == "completed" or project.end_date %}
                     <div class="form-group">
                         <label for="project-end-date">Project Ended</label>
                         <input class="form-control" name="project-end-date" id="project-end-date" value="{{ PROJECT.end_date }}" disabled="disabled" />
