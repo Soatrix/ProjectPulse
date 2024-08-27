@@ -30,8 +30,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 def get_ipaddress():
     host_name = socket.gethostname()
-    ip_address = socket.gethostbyname(host_name.local)
-    return "http://" + ip_address + ":4200"
+    ip_address = socket.gethostbyname(host_name)
+    return "http://" + ip_address
 ALLOWED_HOSTS = ["*"]
 CSRF_ALLOWED_ORIGINS = [get_ipaddress()]
 
