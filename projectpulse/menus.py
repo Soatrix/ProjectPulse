@@ -26,4 +26,29 @@ ADMIN_MENU = [
     }
 ]
 FRONT_MENU = [
+    {
+      "name": "Project Management",
+      "items": [
+          {
+              "icon": "diagram-project",
+              "label": "Projects",
+              "link": "projects"
+          },
+          {
+              "icon": "bars-progress",
+              "label": "Tasks",
+              "link": "tasks"
+          },
+          {
+              "icon": "circle-exclamation",
+              "label": "Issues",
+              "link": "issues"
+          },
+          {
+              "icon": "code-branch",
+              "label": "Workflows",
+              "link": "workflows"
+          }
+      ]
+    }
 ]
