@@ -144,7 +144,7 @@ ADMIN_URL = "/admin/"
 ACCOUNT_URL = "/account/"
 
 # Project Specific Settings
-PROJECT_NAME = "Dynamic Django"
+PROJECT_NAME = "Project Pulse"
 PROJECT_VERSION = "0.1-DEV"
 
 # 404 Settings
