@@ -142,7 +142,7 @@
                                 <td></td>
                             </tr>
                         {% else %}
-                            {% for task in PROJECT.tasks.all %}
+                            {% for task in PROJECT.tasks.all|dictsort:"id" %}
                                 <tr>
                                     <td>{{ task.name }}</td>
                                     <td>{{ task.description }}</td>
