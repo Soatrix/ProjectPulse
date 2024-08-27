@@ -181,7 +181,7 @@
                                     <td><span class="badge badge-info"><a href="{% url 'admin-user-detail' id=issue.assignee.id %}">{{ issue.assignee.username }}</a></span></td>
                                     <td><span class="badge badge-secondary">{{ issue.created_at }}</span></td>
                                     <td><span class="badge badge-{% if issue.status == "closed" %}danger{% elif issue.status == "in_progress" or issue.status == "resolved" %}success{% else %}warning{% endif %}">{{ issue.get_status_display }}</span></td>
-                                    <td><span class="badge badge-{% if issue.severity == "critical" or issue.severity == "high" %}danger{% elif issue.severity == "medium" %}warning{% else %}success{% endif %}">{{ issue.get_status_display }}</span></td>
+                                    <td><span class="badge badge-{% if issue.severity == "critical" or issue.severity == "high" %}danger{% elif issue.severity == "medium" %}warning{% else %}success{% endif %}">{{ issue.get_severity_display }}</span></td>
                                     <td><a href="#" class="btn btn-info btn-sm"><i class="fas fa-wrench fa-sm"></i></a></td>
                                 </tr>
                         {% endfor %}
