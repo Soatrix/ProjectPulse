@@ -148,7 +148,7 @@
                                     <td>{{ task.description }}</td>
                                     <td><span class="badge badge-info"><a href="{% url 'admin-user-detail' id=task.assignee.id %}">{{ task.assignee.username }}</a></span></td>
                                     <td><span class="badge badge-secondary">{{ task.start_date }}-{% if task.end_date %}{{ task.end_date }}{% else %}{% if task.status == "completed" %}{{ task.start_date }}{% else %}Unknown{% endif %}{% endif %}</span></td>
-                                    <td><span class="badge badge-{% if task.status == "not_started" or task.status == "blocked" or task.status == "cancelled" %}danger{% elif task.status == "in_progress" or task.status == "on_hold" %}warning{% else %}success{% endif %}">{{ task.get_status_display }}</span></td>
+                                    <td><span class="badge badge-{% if task.status == "not_started" or task.status == "blocked" or task.status == "cancelled" %}danger{% elif task.status == "in_progress" or task.status == "on_hold" %}warning{% else %}success{% endif %}">{% if task.requirements.all|count_completed == task.requirements.count %}{{ task.get_status_display }}{% else %}Unmet Requirements{% endif %}</span></td>
                                     <td class="text-center"><span class="badge badge-{% if task.requirements.count == 0 %}secondary{% elif task.requirements.all|count_completed == task.requirements.count %}success{% else %}danger{% endif %}">{{ task.requirements.all|count_completed }}/{{ task.requirements.count }}</span></td>
                                     <td><a href="#" class="btn btn-info btn-sm"><i class="fas fa-wrench fa-sm"></i></a></td>
                                 </tr>
