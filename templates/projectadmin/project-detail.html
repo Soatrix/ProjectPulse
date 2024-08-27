@@ -9,7 +9,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'admin-dashboard-home' %}">Admin Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="{% url 'admin-projects' %}">Projects</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ project.name }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ PROJECT.name }}</li>
                 </ol>
             </nav>
         </div>
@@ -45,7 +45,7 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="project-status">Status</label>
-                        <input class="form-control bg-{% if project.status == "not_started" or project.status == "blocked" or project.status == "cancelled" %}blocked{% elif project.status == "in_progress" or project.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ project.status }}" disabled="disabled"/>
+                        <input class="form-control bg-{% if project.status == "not_started" or project.status == "blocked" or project.status == "cancelled" %}blocked{% elif project.status == "in_progress" or project.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ PROJECT.get_status_display }}" disabled="disabled"/>
                     </div>
                 </div>
             </div>
