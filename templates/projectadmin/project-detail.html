@@ -53,8 +53,8 @@
                     </div>
                     <div class="form-group">
                         {% now "Y-m-d" as current_date %}
-                        <p>{{ PROJECT.end_date|date:"Y-m-d" }}</p>
-                        <p>{{ current_date|date:"Y-m-d" }}</p>
+                        <p>Project: {{ PROJECT.end_date|date:"Y-m-d" }}</p>
+                        <p>Current: {{ current_date }}</p>
                         <label for="project-end-date">
                             Project
                             {% if PROJECT.end_date %}
