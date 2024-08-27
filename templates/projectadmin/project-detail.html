@@ -56,7 +56,7 @@
                         <label for="project-end-date">
                             Project
                             {% if PROJECT.end_date %}
-                                {% if PROJECT.end_date|stringformat:"Y-m-d" > current_date %}
+                                {% if PROJECT.end_date > current_date|date:"Y-m-d" %}
                                     Ending
                                 {% else %}
                                     Ended
@@ -71,6 +71,7 @@
                         </label>
                         <input class="form-control" name="project-end-date" id="project-end-date" value="{{ PROJECT.end_date|default:"Unknown" }}" disabled="disabled" />
                     </div>
+
                 </div>
             </div>
         </div>
