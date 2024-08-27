@@ -4,7 +4,7 @@ import os
 
 def project_image_upload_path(instance, filename):
     # This will upload the image to 'projects/<project_id>/<filename>'
-    return os.path.join('projects', str(instance.id), "profile.png")
+    return os.path.join('static', 'projects', str(instance.id), "profile.png")
 
 class Project(models.Model):
     name = models.CharField(max_length=255)
