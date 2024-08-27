@@ -1,0 +1,168 @@
+{% extends "adminpanel/base.html" %}
+{% load filters %}
+{% block page_content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="row d-sm-flex align-items-center justify-content-between">
+        <div class="col-md-12">
+            <h1 class="h3 mb-0 text-dark"><i class="fas fa-user"></i> Manage User</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'admin-dashboard-home' %}">Admin Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'admin-users' %}">Users</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ CURRENTUSER.username }}</li>
+                </ol>
+            </nav>
+        </div>
+        {% if success %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>{{ object }} User Updated!</strong><br> The user was successfully updated.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% elif error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong><br>{{ error|safe }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+    <div class="card text-dark mb-3">
+        <div class="card-header">
+            <h5 class="card-title text-white float-left">User Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="username">Username <small class="text-danger">required</small></label>
+                        <input class="form-control" id="username" name="username" placeholder="Username" value="{{ CURRENTUSER.username }}" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first_name">First Name <small class="text-danger">required</small></label>
+                        <input class="form-control" id="first_name" name="first_name" placeholder="First Name" value="{{ CURRENTUSER.first_name }}" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="last_name">Last Name <small class="text-danger">required</small></label>
+                        <input class="form-control" id="last_name" name="last_name" placeholder="Last Name" value="{{ CURRENTUSER.last_name }}" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="date_of_birth">Date of Birth <small class="text-danger">required</small></label>
+                        <input class="form-control" id="date_of_birth" name="date_of_birth" placeholder="Date of Birth" value="{{ CURRENTUSER.profile.date_of_birth|date:'Y-m-d' }}"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="last_login">Last Login</label>
+                        <input class="form-control bg-primary" id="last_login" name="last_login" placeholder="Last Login" value="{{ CURRENTUSER.last_login }}" disabled="disabled"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="date_joined">Date Joined</label>
+                        <input class="form-control bg-primary" id="date_joined" name="date_joined" placeholder="Date Joined" value="{{ CURRENTUSER.date_joined }}" disabled="disabled"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info float-right m-1">Update User</button>
+            <button type="submit" name="delete" class="btn btn-danger float-right m-1">Delete User</button>
+        </div>
+    </div>
+    <div class="card text-dark mb-3">
+        <div class="card-header">
+            <h5 class="card-title text-white float-left">User Settings</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="theme">Current Theme</label>
+                        <select class="form-select" id="theme" name="theme">
+                            {% for theme in THEMES %}
+                                <option value="{{ theme.id }}" {% if theme == CURRENTUSER.profile.theme %}selected="selected"{% endif %}>{{ theme.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="dark_mode" name="dark_mode" {% if CURRENTUSER.profile.dark_mode %}checked="checked"{% endif %}>
+                            <label class="form-check-label" for="dark_mode">Dark Mode Enabled</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info float-right m-1">Update User</button>
+            <button type="submit" name="delete" class="btn btn-danger float-right m-1">Delete User</button>
+        </div>
+    </div>
+    <div class="card text-dark mb-3">
+        <div class="card-header">
+            <h5 class="card-title text-white float-left">User Groups</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for group in GROUPS %}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="group-{{ group.id }}" name="group-{{ group.id }}" {% if group in CURRENTUSER.groups.all %}checked="checked"{% endif %}>
+                                <label class="form-check-label" for="group-{{ group.id }}">{{ group.name }}</label>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info float-right m-1">Update User</button>
+            <button type="submit" name="delete" class="btn btn-danger float-right m-1">Delete User</button>
+        </div>
+    </div>
+    <div class="card text-dark mb-3">
+        <div class="card-header">
+            <h5 class="card-title text-white float-left">User Permissions</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="superuser" name="superuser" {% if CURRENTUSER.is_superuser %}checked="checked"{% endif %}>
+                            <label class="form-check-label" for="superuser">Grant All Permissions</label>
+                        </div>
+                    </div>
+                </div>
+                {% for permission in PERMISSIONS %}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="permission-{{ permission.id }}" name="permission-{{ permission.id }}" {% if CURRENTUSER|has_permission:permission %}checked="checked"{% endif %}>
+                                <label class="form-check-label" for="permission-{{ permission.id }}">({{ permission.content_type|split_string:" | :0" }}) {{ permission.name }}</label>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info float-right m-1">Update User</button>
+            <button type="submit" name="delete" class="btn btn-danger float-right m-1">Delete User</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "adminpanel/base.html" %}
+{% block page_content %}
+<!-- Page Heading -->
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="row d-sm-flex align-items-center justify-content-between">
+        <div class="col-md-6">
+            <h1 class="h3 mb-0 text-dark"><i class="fas fa-palette"></i> Themes</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    {% with ADMIN_URL as url %}
+                    <li class="breadcrumb-item"><a href="{{ url }}">Admin Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Themes</li>
+                    {% endwith %}
+                </ol>
+            </nav>
+        </div>
+        {% if success %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Theme Created!</strong><br> The theme has been successfully created.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% elif error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong><br>{{ error|safe }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h5 class="page-title text-white">Installed Themes</h5>
+                </div>
+                <table class="table table-striped {% if user.profile.dark_mode %}table-dark{% else %}table-light{% endif %} table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Theme Name</th>
+                            <th scope="col">Light Mode</th>
+                            <th scope="col">Dark Mode</th>
+                            <th scope="col">Default</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for theme in THEMES %}
+                            <tr>
+                                <td>{{ theme.name }}</td>
+                                <td><span class="badge badge-{% if theme.light_css == "" %}danger{% else %}success{% endif %}"><i class="fas fa-{% if theme.light_css == "" %}xmark{% else %}check{% endif %}"></i></span></td>
+                                <td><span class="badge badge-{% if theme.dark_css == "" %}danger{% else %}success{% endif %}"><i class="fas fa-{% if theme.dark_css == "" %}xmark{% else %}check{% endif %}"></i></span></td>
+                                <td><span class="badge badge-{% if theme.default %}success{% else %}danger{% endif %}"><i class="fas fa-{% if theme.default %}check{% else %}xmark{% endif %}"></i></span></td>
+                                <td><a href="{% url 'admin-theme-detail' id=theme.id %}" class="badge badge-info"><i class="fas fa-wrench"></i></a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h5 class="page-title text-white">Create New Theme</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="theme-name">Theme Name</label>
+                        <input class="form-control" id="theme-name" name="theme-name" placeholder="Theme Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="theme-light-css">Theme Light CSS</label>
+                        <textarea class="form-control" id="theme-light-css" name="theme-light-css" placeholder="Enter Light CSS Here..." rows="5"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="theme-dark-css">Theme Dark CSS</label>
+                        <textarea class="form-control" id="theme-dark-css" name="theme-dark-css" placeholder="Enter Dark CSS Here..." rows="5"></textarea>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" name="create-theme" class="btn btn-info float-right">Create Theme</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

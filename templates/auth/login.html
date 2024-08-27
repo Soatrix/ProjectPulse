@@ -1,0 +1,44 @@
+{% extends 'auth/base.html' %}
+
+{% block cover_image %}
+{% load static %}
+{% static 'img/logo.png' %}
+{% endblock %}
+
+{% block page_content %}
+        <form method="POST" action="">
+		  {% csrf_token %}
+          <!-- Email/Username input -->
+		  <div data-mdb-input-init class="form-outline mb-4">
+			<label class="form-label" for="username">Email Address/Username</label>
+			<input type="text" id="username" name="username" class="form-control form-control-lg"
+			  placeholder="Email Address/Username" required />
+		  </div>
+
+          <!-- Password input -->
+		  <div data-mdb-input-init class="form-outline mb-3">
+			<label class="form-label" for="password">Password</label>
+			<input type="password" id="password" name="password" class="form-control form-control-lg"
+			  placeholder="Password" required />
+		  </div>
+		  
+		<div class="d-flex justify-content-between align-items-center">
+			<!-- Checkbox -->
+			<div class="form-check mb-0">
+			  <input class="form-check-input me-2" type="checkbox" name="remember_me" id="remember_me" />
+			  <label class="form-check-label" for="remember_me">
+				Remember me
+			  </label>
+			</div>
+			<a href="#!" class="text-body">Forgot password?</a>
+		  </div>
+
+		  <div class="text-center text-lg-start mt-4 pt-2">
+			<button type="submit" class="btn btn-primary btn-lg gradient-bg"
+			  style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+			<p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="{% url 'auth-register' %}"
+				class="gradient-bg rounded p-1">Register Here</a></p>
+		  </div>
+
+        </form>
+{% endblock %}

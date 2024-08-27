@@ -1,0 +1,117 @@
+{% extends "panel/base.html" %}
+{% block page_content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header text-dark"><i class="fas fa-user-shield"></i> Manage Your Account</h1>
+        <hr>
+        <div class="row">
+            {% if password_error or email_error %}
+            <div class="col-md-12">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>Error:</strong> {{ password_error }}{{ email_error }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            </div>
+            {% elif password_success or email_success %}
+            <div class="col-md-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>Updated:</strong> Your {% if password_success %}password{% else %}email{% endif %} has been successfully changed. Remember to use your new {% if password_success %}password{% else %}email{% endif %} when you login again.
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            </div>
+            {% endif %}
+            <div class="col-md-4">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="card text-dark mb-3">
+						<div class="card-header">
+                            <h5 class="card-title">Change Password</h5>
+						</div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="password">Current Password</label>
+                                <input class="form-control" name="password" id="password" type="password">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input class="form-control" name="new-password" id="new-password" type="password">
+                                <small>Your new password should be at least 8 characters in length.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password-confirm">Confirm New Password</label>
+                                <input class="form-control" name="new-password-confirm" id="new-password-confirm" type="password">
+                            </div>
+                            <button type="submit" class="btn btn-info float-right">Update Password</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="card text-dark mb-3">
+						<div class="card-header">
+                            <h5 class="card-title">Change Email</h5>
+						</div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="email">New Email</label>
+                                <input class="form-control" name="email" id="email" type="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="email-confirm">Confirm New Email</label>
+                                <input class="form-control" name="email-confirm" id="email-confirm" type="email">
+                            </div>
+                            <button type="submit" class="btn btn-info float-right">Update Email</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="card text-dark mb-3">
+                        <div class="card-header">
+                            <h5 class="card-title">Panel Theme Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="theme">Current Theme:</label>
+                                <select class="form-select" name="theme" id="theme">
+                                    {% for theme in THEMES %}
+                                        <option value="{{ theme.id }}" {% if USER.profile.theme == THEME %}selected="selected"{% endif %}>{{ theme }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="dark-mode" name="dark-mode" {% if USER.profile.dark_mode %}checked="checked"{% endif %}>
+                                    <label class="form-check-label" for="dark-mode">Dark Mode Enabled</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-info float-right" type="submit" name="update-theme">Update Settings</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="card text-dark mb-3">
+					<div class="card-header">
+                        <h5 class="card-title">2-Factor Authentication</h5>
+					</div>
+                    <div class="card-body">
+                        <p>You do not currently have two-step verification enabled on your account. Click the button below to begin configuring it.</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-info float-right" disabled="disabled">Enable 2-Step</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
