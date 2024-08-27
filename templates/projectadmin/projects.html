@@ -50,14 +50,14 @@
                 {% for project in PROJECTS %}
                     <tr>
                         {% load static %}
-                        <td>{% if project.logo %}<img style="max-height: 25px;" class="img-fluid" src="{{ project.logo.url }}" />{% endif %}</td>
-                        <td>{{ project.name }}</td>
+                        <td>{% if project.logo %}<img style="max-height: 25px;" class="img-fluid" alt="{{ project.name }}" src="{{ project.logo.url }}" />{% endif %}</td>
+                        <td><a href="#">{{ project.name }}</a></td>
                         <td><a href="{% url 'admin-user-detail' id=project.owner.id %}">{% if project.owner.first_name %}{{ project.owner.first_name }} {{ project.owner.last_name }}{% else %}{{ project.username }}{% endif %}</a></td>
                         <td><span class="badge badge-info">{{ project.members.count }}</span></td>
                         <td><span class="badge badge-secondary">{{ project.start_date }}-{{ project.end_date|default:'Unknown' }}</span></td>
                         <td><span class="badge badge-{% if project.status == "not_started" or project.status == "blocked" or project.status == "cancelled" %}blocked{% elif project.status == "in_progress" %}warning{% else %}success{% endif %}">{{ project.get_status_display }}</span></td>
-                        <td><span class="badge badge-info">{{ project.tasks.count }}</span></td>
-                        <td><span class="badge badge-danger">{{ project.issues.count }}</span></td>
+                        <td class="text-center"><span class="badge badge-info">{{ project.tasks.count }}</span></td>
+                        <td class="text-center"><span class="badge badge-danger">{{ project.issues.count }}</span></td>
                         <td></td>
                     </tr>
                 {% endfor %}
