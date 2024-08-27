@@ -51,12 +51,11 @@
                         <label for="project-start-date">Project Started</label>
                         <input class="form-control" name="project-start-date" id="project-start-date" value="{{ PROJECT.start_date }}" disabled="disabled" />
                     </div>
-                    {% if project.status == "completed" or project.end_date %}
                     <div class="form-group">
-                        <label for="project-end-date">Project Ended</label>
+                        {% now "Y-m-d" as current_date %}
+                        <label for="project-end-date">Project {% if project.end_date %}{% if project.end_date < current_date %}Ending{% else %}Ended{% endif %}{% else %}{% if project.status == "completed" %}Ended{% else %}Ending{% endif %}{% endif %}</label>
                         <input class="form-control" name="project-end-date" id="project-end-date" value="{{ PROJECT.end_date }}" disabled="disabled" />
                     </div>
-                    {% endif %}
                 </div>
             </div>
         </div>
