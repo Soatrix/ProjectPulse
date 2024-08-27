@@ -43,8 +43,8 @@ class TaskAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('project', 'name', 'description', 'assignee', 'start_date', 'due_date', 'status')
         }),
-        ('Dependencies', {
-            'fields': ('dependencies',)
+        ('Requirements', {
+            'fields': ('requirements',)
         }),
         ('Custom Fields', {
             'fields': ('custom_fields',)
