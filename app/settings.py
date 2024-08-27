@@ -28,12 +28,7 @@ SECRET_KEY = 'django-insecure-o=5ard%a-_u)v9(r&0ldp^j4n=t@8b@=!p(^*s(z&n4zo8tah=
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-def get_ipaddress():
-    host_name = socket.gethostname()
-    ip_address = socket.gethostbyname(host_name)
-    return "http://" + ip_address
-ALLOWED_HOSTS = ["*"]
-CSRF_ALLOWED_ORIGINS = [get_ipaddress()]
+CSRF_ALLOWED_ORIGINS = ["https://projectpulse.havenmarket.net"]
 
 
 # Application definition
