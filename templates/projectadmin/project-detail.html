@@ -45,7 +45,7 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="project-status">Status</label>
-                        <input class="form-control bg-{% if project.status == "not_started" or project.status == "blocked" or project.status == "cancelled" %}blocked{% elif project.status == "in_progress" or project.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ project.get_status_display }}" disabled="disabled"/>
+                        <input class="form-control bg-{% if project.status == "not_started" or project.status == "blocked" or project.status == "cancelled" %}blocked{% elif project.status == "in_progress" or project.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ project.status }}" disabled="disabled"/>
                     </div>
                 </div>
             </div>
