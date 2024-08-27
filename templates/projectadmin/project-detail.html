@@ -69,7 +69,7 @@
                                 {% endif %}
                             {% endif %}
                         </label>
-                        <input class="form-control" name="project-end-date" id="project-end-date" value="{{ PROJECT.end_date|default:"Unknown" }}" disabled="disabled" />
+                        <input class="form-control" name="project-end-date" id="project-end-date" value="{% if PROJECT.end_date %}{{ PROJECT.end_date }}{% else %}{% if PROJECT.status == "completed" %}{{ PROJECT.start_date }}{% else %}Unknown{% endif %}{% endif %}" disabled="disabled" />
                     </div>
 
                 </div>
