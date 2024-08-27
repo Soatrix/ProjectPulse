@@ -84,6 +84,18 @@
 
                 </div>
             </div>
+
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Members</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="project-owner">Owner</label>
+                        <input class="form-control" name="project-owner" id="project-owner" value="{% if PROJECT.owner.first_name %}{{ PROJECT.owner.first_name }} {{ PROJECT.owner.last_name }}{% else %}{{ PROJECT.owner.username }}{% endif %}" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </form>
