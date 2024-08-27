@@ -35,21 +35,18 @@
         <table class="table table-borderless {% if user.profile.dark_mode %}table-dark{% else %}table-light{% endif %} table-hover">
             <thead class="thead-dark">
                 <tr>
+                    <th scope="col"></th>
                     <th scope="col">Name</th>
-                    <th scope="col">Users</th>
-                    <th scope="col">Permissions</th>
+                    <th scope="col">Owner</th>
+                    <th scope="col">Members</th>
+                    <th scope="col">Timeline</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Tasks</th>
+                    <th scope="col">Issues</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                {% for group in GROUPS %}
-                    <tr>
-                        <td>{{ group.name }}</td>
-                        <td><span class="badge badge-secondary">{{ group.user_set.count }}</span></td>
-                        <td><span class="badge badge-secondary">{{ group.permissions.count }}</span></td>
-                        <td><a href="{% url 'admin-group-detail' id=group.id %}" class="badge badge-info"><i class="fas fa-wrench"></i></a></td>
-                    </tr>
-                {% endfor %}
             </tbody>
         </table>
     </div>
