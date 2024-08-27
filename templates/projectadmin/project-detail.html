@@ -58,7 +58,7 @@
                         <label for="project-end-date">
                             Project
                             {% if PROJECT.end_date %}
-                                {% if PROJECT.end_date|date:"Y-m-d" > current_date|date:"Y-m-d" %}
+                                {% if PROJECT.end_date|date:"Y-m-d" > current_date %}
                                     Ending
                                 {% else %}
                                     Ended
