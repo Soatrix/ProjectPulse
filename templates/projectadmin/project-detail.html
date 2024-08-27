@@ -176,7 +176,7 @@
                     <tbody>
                         {% for issue in PROJECT.issues.all %}
                                 <tr>
-                                    <td>{{ issue.name }}</td>
+                                    <td>{{ issue.title }}</td>
                                     <td>{{ issue.description }}</td>
                                     <td><span class="badge badge-info"><a href="{% url 'admin-user-detail' id=issue.assignee.id %}">{{ issue.assignee.username }}</a></span></td>
                                     <td><span class="badge badge-secondary">{{ issue.created_at }}</span></td>
