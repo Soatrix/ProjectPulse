@@ -50,7 +50,7 @@
                 {% for project in PROJECTS %}
                     <tr>
                         {% load static %}
-                        <td><img class="img-fluid" src="{{ project.logo.url|default:"" }}" /></td>
+                        <td>{% if project.logo %}<img class="img-fluid" src="{{ project.logo.url }}" />{% endif %}</td>
                         <td>{{ project.name }}</td>
                         <td><a href="{% url 'admin-user-detail' id=project.owner.id %}">{% if project.owner.first_name %}{{ project.owner.first_name }} {{ project.owner.last_name }}{% else %}{{ project.username }}{% endif %}</a></td>
                         <td><span class="badge badge-info">{{ project.members.count }}</span></td>
