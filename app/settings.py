@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'panelauth',
     'panel',
-    'adminpanel'
+    'adminpanel',
+    'projectpulse'
 ]
 
 MIDDLEWARE = [
