@@ -129,6 +129,20 @@
                             <th scope="col"></th>
                         </tr>
                     </thead>
+                    <tbody>
+                        {% if PROJECT.tasks.all.count == 0 %}
+                            <tr>
+                                <td></td>
+                                <td>No tasks have been created for this project yet.</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% else %}
+                        {% endif %}
+                    </tbody>
                 </table>
             </div>
         </div>
