@@ -1,0 +1,4 @@
+ADMIN_MENU = [
+]
+FRONT_MENU = [
+]
