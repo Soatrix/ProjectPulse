@@ -100,10 +100,10 @@
                     <div class="form-group">
                         <label for="project-members">Members</label>
                         <select multiple class="form-select" name="project-members" id="project-members" disabled="disabled">
-                            {% if PROJECT.members.count == 0 %}
+                            {% if PROJECT.members.all.count == 0 %}
                                 <option value="0" selected="selected">None</option>
                             {% else %}
-                                {% for member in PROJECT.members %}
+                                {% for member in PROJECT.members.all %}
                                     <option value="{{ member.id }}" selected="selected">{{ member.username }} {% if member.first_name %}({{ PROJECT.first_name }} {{ PROJECT.last_name }}){% endif %}</option>
                                 {% endfor %}
                             {% endif %}
