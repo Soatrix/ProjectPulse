@@ -42,6 +42,12 @@
                 <div class="card-header">
                     <h5 class="card-title float-left">Information</h5>
                 </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="project-status">Status</label>
+                        <input class="form-control bg-{% if project.status == "not_started" or project.status == "blocked" or project.status == "cancelled" %}blocked{% elif project.status == "in_progress" or project.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ project.get_status_display }}" disabled="disabled"/>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
