@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'projectpulse',
     'panelauth',
     'panel',
-    'adminpanel'
+    'adminpanel',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [
