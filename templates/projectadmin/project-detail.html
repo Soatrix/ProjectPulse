@@ -157,6 +157,37 @@
                     </tbody>
                 </table>
             </div>
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Project Issues</h5>
+                </div>
+                <table class="table table-borderless {% if user.profile.dark_mode %}table-dark{% else %}table-light{% endif %} table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Assignee</th>
+                            <th scope="col">Timeline</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Severity</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for issue in PROJECT.issues.all %}
+                                <tr>
+                                    <td>{{ issue.name }}</td>
+                                    <td>{{ issue.description }}</td>
+                                    <td><span class="badge badge-info"><a href="{% url 'admin-user-detail' id=task.assignee.id %}">{{ task.assignee.username }}</a></span></td>
+                                    <td><span class="badge badge-secondary">{{ issue.created_at }}</span></td>
+                                    <td><span class="badge badge-{% if issue.status == "closed" %}danger{% elif issue.status == "in_progress" or issue.status == "resolved" %}success{% else %}warning{% endif %}">{{ issue.get_status_display }}</span></td>
+                                    <td><span class="badge badge-{% if issue.severity == "critical" or issue.severity == "high" %}danger{% elif issue.severity == "medium" %}warning{% else %}success{% endif %}">{{ issue.get_status_display }}</span></td>
+                                    <td><a href="#" class="btn btn-info btn-sm"><i class="fas fa-wrench fa-sm"></i></a></td>
+                                </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </form>
