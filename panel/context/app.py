@@ -7,7 +7,7 @@ def dynamic_menu(request):
     else:
         menu = settings.FRONT_MENU
     return {
-        "MENU": menu.reverse()
+        "MENU": menu
     }
 
 def site_settings(request):
