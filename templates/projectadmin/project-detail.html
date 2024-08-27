@@ -53,7 +53,22 @@
                     </div>
                     <div class="form-group">
                         {% now "Y-m-d" as current_date %}
-                        <label for="project-end-date">Project {% if PROJECT.end_date %}{% if PROJECT.end_date < current_date %}Ending{% else %}Ended{% endif %}{% else %}{% if PROJECT.status == "completed" %}Ended{% else %}Ending{% endif %}{% endif %}</label>
+                        <label for="project-end-date">
+                            Project
+                            {% if PROJECT.end_date %}
+                                {% if PROJECT.end_date|stringformat:"Y-m-d" > current_date %}
+                                    Ending
+                                {% else %}
+                                    Ended
+                                {% endif %}
+                            {% else %}
+                                {% if PROJECT.status == "completed" %}
+                                    Ended
+                                {% else %}
+                                    Ending
+                                {% endif %}
+                            {% endif %}
+                        </label>
                         <input class="form-control" name="project-end-date" id="project-end-date" value="{{ PROJECT.end_date|default:"Unknown" }}" disabled="disabled" />
                     </div>
                 </div>
