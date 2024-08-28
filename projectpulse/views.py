@@ -71,3 +71,13 @@ class AdminProjectEditView(TemplateView):
                 context["success"] = True
 
         return self.render_to_response(context)
+
+
+class AdminTaskDetailView(TemplateView):
+    template_name = "projectadmin/task-detail.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["TASK"] = Task.objects.get(pk=self.kwargs.get("id"))
+        context["STATUSES"] = Task.Status
+        context["PAGE_TITLE"] = context["TASK"].name
+        return context
