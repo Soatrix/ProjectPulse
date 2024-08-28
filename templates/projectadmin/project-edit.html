@@ -56,7 +56,7 @@
                     <div class="form-group">
                         <label for="project-status">Status</label>
                         <select class="form-select" name="project-status" id="project-status">
-                            {% for value, display in Task._meta.get_field('status').choices %}
+                            {% for value, display in task.status.choices %}
                                 <option value="{{ value }}">{{ display }}</option>
                             {% endfor %}
                         </select>
