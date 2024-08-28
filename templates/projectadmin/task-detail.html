@@ -38,7 +38,7 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="project-name">Task Name</label>
+                        <label for="project-name">Task Name <small class="text-danger">required</small></label>
                         <input class="form-control" name="name" id="name" value="{{ TASK.name }}"/>
                     </div>
                     <div class="form-group">
@@ -99,6 +99,51 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Task Requirements</h5>
+                </div>
+                <table class="table table-borderless {% if user.profile.dark_mode %}table-dark{% else %}table-light{% endif %} table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Assignee</th>
+                            <th scope="col">Timeline</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Requirements</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if TASK.requirements.count == 0 %}
+                            <tr>
+                                <td></td>
+                                <td>No tasks have been created for this project yet.</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% else %}
+                            {% for task in TASK.requirements.all|dictsort:"id" %}
+                                <tr>
+                                    <td>{{ task.name }}</td>
+                                    <td>{{ task.description }}</td>
+                                    <td><span class="badge badge-info"><a href="{% url 'admin-user-detail' id=task.assignee.id %}">{{ task.assignee.username }}</a></span></td>
+                                    <td><span class="badge badge-secondary">{{ task.start_date }}-{% if task.end_date %}{{ task.end_date }}{% else %}{% if task.status == "completed" %}{{ task.start_date }}{% else %}Unknown{% endif %}{% endif %}</span></td>
+                                    <td><span class="badge badge-{% if task.status == "not_started" or task.status == "blocked" or task.status == "cancelled" %}danger{% elif task.status == "in_progress" or task.status == "on_hold" %}warning{% else %}success{% endif %}">{% if task.completed_requirements == task.total_requirements %}{{ task.get_status_display }}{% else %}Unmet Requirements{% endif %}</span></td>
+                                    <td class="text-center"><span class="badge badge-{% if task.total_requirements == 0 %}secondary{% elif task.completed_requirements == task.total_requirements %}success{% else %}danger{% endif %}">{{ task.completed_requirements }}/{{ task.total_requirements }}</span></td>
+                                    <td><a href="{% url 'admin-task-detail' id=task.id %}" class="btn btn-info btn-sm"><i class="fas fa-wrench fa-sm"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
