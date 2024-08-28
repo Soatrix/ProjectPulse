@@ -60,6 +60,9 @@
                                 <option value="{{ value }}">{{ display }}</option>
                             {% endfor %}
                         </select>
+                        <p>{{ PROJECT.status }}</p>
+                        <p>{{ PROJECT.status.choices }}</p>
+                        <p>{{ PROJECT.status.field.choices }}</p>
                     </div>
                     <div class="form-group">
                         <label for="project-start-date">Project Started</label>
