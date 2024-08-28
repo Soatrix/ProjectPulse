@@ -81,3 +81,13 @@ class AdminTaskDetailView(TemplateView):
         context["STATUSES"] = Task.Status
         context["PAGE_TITLE"] = context["TASK"].name
         return context
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        if "mark-complete" in request.POST:
+            context["TASK"].status = "completed"
+            context["TASK"].save()
+            context["success"] = True
+            context["message"] = "The task was successfully marked as completed."
+
+        return self.render_to_response(context)
