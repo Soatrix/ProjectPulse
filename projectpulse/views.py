@@ -32,3 +32,33 @@ class AdminProjectEditView(TemplateView):
         context["STATUSES"] = Project.Status
         context["PAGE_TITLE"] = context["PROJECT"].name
         return context
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        if "update" in request.POST:
+            requiredFields = ["name", "status", "start_date"]
+            fields = ["name", "status", "start_date", "end_date", "description"]
+            started = False
+            for field in fields:
+                if field not in request.POST:
+                    if not started:
+                        started = True
+                        context["error"] = "<ul>"
+                    context["error"] = context["error"] + f"<li>{field} is required."
+                elif field in request.POST and field in requiredFields and request.POST.get(field) == "":
+                    if not started:
+                        context["error"] = "<ul>"
+                        started = True
+                    context["error"] = context["error"] + f"<li>The field \"" + field.replace("-", " ").replace("_", " ").title() + "\" is required.</li>"
+            if started:
+                context["error"] = context["error"] + "</ul>"
+            saveRequired = False
+            if not "error" in context:
+                for field in fields:
+                    setattr(context["PROJECT"], field, request.POST.get(field))
+                    saveRequired = True
+            if saveRequired:
+                context["PROJECT"].save()
+                context["success"] = True
+
+        return self.render_to_response(context)
