@@ -4,12 +4,12 @@
     {% csrf_token %}
     <div class="row d-sm-flex align-items-center justify-content-between">
         <div class="col-md-12">
-            <h1 class="h3 mb-0 text-dark"><i class="fas fa-diagram-project"></i> {{ PAGE_TITLE }}<a href="{% url 'admin-project-edit' id=PROJECT.id %}" class="btn btn-info float-right">Edit Project</a></h1>
+            <h1 class="h3 mb-0 text-dark"><i class="fas fa-diagram-project"></i> Editing {{ PAGE_TITLE }}<a href="{% url 'admin-project-detail' id=PROJECT.id %}" class="btn btn-outline-danger float-right">Cancel</a></h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'admin-dashboard-home' %}">Admin Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="{% url 'admin-projects' %}">Projects</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ PROJECT.name }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">Editing {{ PROJECT.name }}</li>
                 </ol>
             </nav>
         </div>
@@ -38,11 +38,11 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="project-name">Project Name</label>
-                        <input class="form-control" name="project-name" id="project-name" value="{{ PROJECT.name }}" disabled="disabled"/>
+                        <input class="form-control" name="project-name" id="project-name" value="{{ PROJECT.name }}"/>
                     </div>
                     <div class="form-group">
                         <label for="project-description">Project Description</label>
-                        <textarea class="form-control" name="project-description" id="project-description" rows="20" disabled="disabled">{{ PROJECT.description }}</textarea>
+                        <textarea class="form-control" name="project-description" id="project-description" rows="20">{{ PROJECT.description }}</textarea>
                     </div>
                 </div>
             </div>
@@ -55,11 +55,11 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="project-status">Status</label>
-                        <input class="form-control bg-{% if PROJECT.status == "not_started" or PROJECT.status == "blocked" or PROJECT.status == "cancelled" %}blocked{% elif PROJECT.status == "in_progress" or PROJECT.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ PROJECT.get_status_display }}" disabled="disabled"/>
+                        <input class="form-control bg-{% if PROJECT.status == "not_started" or PROJECT.status == "blocked" or PROJECT.status == "cancelled" %}blocked{% elif PROJECT.status == "in_progress" or PROJECT.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ PROJECT.get_status_display }}"/>
                     </div>
                     <div class="form-group">
                         <label for="project-start-date">Project Started</label>
-                        <input class="form-control" name="project-start-date" id="project-start-date" value="{{ PROJECT.start_date }}" disabled="disabled" />
+                        <input class="form-control" name="project-start-date" id="project-start-date" value="{{ PROJECT.start_date }}"/>
                     </div>
                     <div class="form-group">
                         {% now "Y-m-d" as current_date %}
@@ -79,7 +79,7 @@
                                 {% endif %}
                             {% endif %}
                         </label>
-                        <input class="form-control" name="project-end-date" id="project-end-date" value="{% if PROJECT.end_date %}{{ PROJECT.end_date }}{% else %}{% if PROJECT.status == "completed" %}{{ PROJECT.start_date }}{% else %}Unknown{% endif %}{% endif %}" disabled="disabled" />
+                        <input class="form-control" name="project-end-date" id="project-end-date" value="{% if PROJECT.end_date %}{{ PROJECT.end_date }}{% else %}{% if PROJECT.status == "completed" %}{{ PROJECT.start_date }}{% else %}Unknown{% endif %}{% endif %}" />
                     </div>
 
                 </div>
@@ -94,12 +94,12 @@
                         <label for="project-owner">Owner</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="project-owner-tag">@</span>
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="project-owner-tag" name="project-owner" id="project-owner" value="{{ PROJECT.owner.username }} {% if PROJECT.owner.first_name %}({{ PROJECT.owner.first_name }} {{ PROJECT.owner.last_name }}){% endif %}" disabled="disabled"/>
+                            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="project-owner-tag" name="project-owner" id="project-owner" value="{{ PROJECT.owner.username }} {% if PROJECT.owner.first_name %}({{ PROJECT.owner.first_name }} {{ PROJECT.owner.last_name }}){% endif %}"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="project-members">Members</label>
-                        <select multiple class="form-select" name="project-members" id="project-members" disabled="disabled">
+                        <select multiple class="form-select" name="project-members" id="project-members">
                             {% if PROJECT.members.all.count == 0 %}
                                 <option value="0" selected="selected">None</option>
                             {% else %}
@@ -186,24 +186,6 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
-            <div class="card text-dark mb-3">
-                <div class="card-header bg-danger">
-                    <h5 class="card-title">Danger Zone</h5>
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <a href="#" class="btn btn-outline-danger float-right">Transfer Ownership</a>
-                        <h5>Transfer Ownership</h5>
-                        <small>Transfer the ownership of this project to a different user.</small>
-                    </div>
-                    <hr>
-                    <div class="form-group">
-                        <a href="#" class="btn btn-outline-danger float-right">Delete Project</a>
-                        <h5>Delete Project</h5>
-                        <small>This process is irreversible. Once deleted, it's gone forever.</small>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
