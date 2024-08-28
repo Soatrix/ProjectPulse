@@ -31,6 +31,15 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+class ProjectNote(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='notes')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='project_notes')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Note by {self.author} on {self.project.name}'
+
 class Task(models.Model):
     class Status(models.TextChoices):
         NOT_STARTED = 'not_started', 'Not Started'
@@ -62,6 +71,14 @@ class Task(models.Model):
     def completed_requirements(self):
         return sum(1 for task in self.requirements.all() if task.status in [Task.Status.COMPLETED, Task.Status.CANCELLED, Task.Status.BLOCKED]) + sum(1 for issue in self.issues.all() if issue.status in [Issue.Status.RESOLVED, Issue.Status.CLOSED])
 
+class TaskNote(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='notes')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='task_notes')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Note by {self.author} on {self.task.name}'
 
 class Issue(models.Model):
     class Status(models.TextChoices):
@@ -92,3 +109,12 @@ class Issue(models.Model):
 
     def __str__(self):
         return self.title
+
+class IssueNote(models.Model):
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='notes')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='issue_notes')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Note by {self.author} on {self.issue.title}'
