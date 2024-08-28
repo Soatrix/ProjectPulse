@@ -56,8 +56,8 @@
                     <div class="form-group">
                         <label for="project-status">Status</label>
                         <select class="form-select" name="project-status" id="project-status">
-                            {% for value, display in STATUSES %}
-                                <option value="{{ value }}">{{ display }}</option>
+                            {% for value in STATUSES %}
+                                <option value="{{ value.0 }}">{{ value.1 }}</option>
                             {% endfor %}
                         </select>
                     </div>
