@@ -73,7 +73,7 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="status">Status <small class="text-danger">required</small></label>
-                        <input class="form-control bg-{% if TASK.status == "not_started" or TASK.status == "blocked" or TASK.status == "cancelled" %}blocked{% elif TASK.status == "in_progress" or TASK.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ TASK.get_status_display }}" disabled="disabled"/>
+                        <input class="form-control bg-{% if TASK.status == "not_started" or TASK.status == "blocked" or TASK.status == "cancelled" %}danger{% elif TASK.status == "in_progress" or TASK.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ TASK.get_status_display }}" disabled="disabled"/>
                     </div>
                     <div class="form-group">
                         <label for="start_date">Task Started</label>
