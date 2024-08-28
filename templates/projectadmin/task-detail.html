@@ -54,12 +54,16 @@
                     <h5 class="card-title">Control Panel</h5>
                 </div>
                 <div class="card-body">
-                    {% if TASK.status == "not_started" %}
-                        <button type="submit" name="mark-started" class="btn btn-outline-success btn-block">Start Task</button>
+                    {% if TASK.completed_requirements == TASK.total_requirements %}
+                        {% if TASK.status == "not_started" %}
+                            <button type="submit" name="mark-started" class="btn btn-outline-success btn-block">Start Task</button>
+                        {% endif %}
+                        <button type="submit" name="mark-complete" class="btn btn-outline-success btn-block">Complete Task</button>
+                        <button type="submit" name="mark-blocked" class="btn btn-outline-danger btn-block">Block Task</button>
+                        <button type="submit" name="mark-cancelled" class="btn btn-outline-danger btn-block">Cancel Task</button>
+                    {% else %}
+                        <p>This task has unmet requirements. Please complete all the necessary requirements to manage this task.</p>
                     {% endif %}
-                    <button type="submit" name="mark-complete" class="btn btn-outline-success btn-block">Complete Task</button>
-                    <button type="submit" name="mark-blocked" class="btn btn-outline-danger btn-block">Block Task</button>
-                    <button type="submit" name="mark-cancelled" class="btn btn-outline-danger btn-block">Cancel Task</button>
                 </div>
             </div>
             <div class="card text-dark mb-3">
