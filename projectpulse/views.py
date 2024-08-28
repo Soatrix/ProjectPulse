@@ -89,5 +89,13 @@ class AdminTaskDetailView(TemplateView):
             context["TASK"].save()
             context["success"] = True
             context["message"] = "The task was successfully marked as completed."
-
+        elif "mark-started" in request.POST:
+            if context["TASK"].status == "completed" or context["TASK"].status == "cancelled":
+                context["message"] = "The task was successfully reopened."
+            else:
+                context["context"] = "The task was successfully marked as in progress."
+            context["TASK"].status = "in_progress"
+            context["TASK"].save()
+            context["success"] = True
+            
         return self.render_to_response(context)
