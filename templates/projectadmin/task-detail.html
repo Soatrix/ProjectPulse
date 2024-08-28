@@ -51,6 +51,19 @@
         <div class="col-md-5">
             <div class="card text-dark mb-3">
                 <div class="card-header">
+                    <h5 class="card-title">Control Panel</h5>
+                </div>
+                <div class="card-body">
+                    {% if TASK.status == "not_started" %}
+                        <button type="submit" name="mark-started" class="btn btn-outline-success btn-block">Start Task</button>
+                    {% endif %}
+                    <button type="submit" name="mark-complete" class="btn btn-outline-success btn-block">Complete Task</button>
+                    <button type="submit" name="mark-blocked" class="btn btn-outline-danger btn-block">Block Task</button>
+                    <button type="submit" name="mark-cancelled" class="btn btn-outline-danger btn-block">Cancel Task</button>
+                </div>
+            </div>
+            <div class="card text-dark mb-3">
+                <div class="card-header">
                     <h5 class="card-title float-left">Information</h5>
                 </div>
                 <div class="card-body">
@@ -83,21 +96,6 @@
                         <input class="form-control" name="end_date" id="end_date" value="{% if PROJECT.end_date %}{{ PROJECT.end_date }}{% else %}{% if PROJECT.status == "completed" %}{{ PROJECT.start_date }}{% else %}Unknown{% endif %}{% endif %}" disabled="disabled" />
                     </div>
 
-                </div>
-            </div>
-
-            <div class="card text-dark mb-3">
-                <div class="card-header">
-                    <h5 class="card-title">Permissions</h5>
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="assignee">Owner</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="assignee-tag">@</span>
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="assignee-tag" name="assignee" id="assignee" value="{{ TASK.assignee.username }} {% if TASK.assignee.first_name %}({{ TASK.assignee.first_name }} {{ TASK.assignee.last_name }}){% endif %}" disabled="disabled"/>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
