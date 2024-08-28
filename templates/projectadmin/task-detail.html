@@ -57,7 +57,7 @@
                     {% if TASK.completed_requirements == TASK.total_requirements %}
                         {% if TASK.status == "not_started" %}
                             <button type="submit" name="mark-started" class="btn btn-outline-success btn-block">Start Task</button>
-                        {% else %}
+                        {% elif TASK.status != "in_progress" %}
                             <button type="submit" name="mark-started" class="btn btn-outline-warning btn-block">Reopen Task</button>
                         {% endif %}
                         {% if TASK.status != "completed" %}

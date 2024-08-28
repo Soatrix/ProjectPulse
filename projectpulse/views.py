@@ -97,5 +97,5 @@ class AdminTaskDetailView(TemplateView):
             context["TASK"].status = "in_progress"
             context["TASK"].save()
             context["success"] = True
-            
+
         return self.render_to_response(context)
