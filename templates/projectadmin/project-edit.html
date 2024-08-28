@@ -4,7 +4,7 @@
     {% csrf_token %}
     <div class="row d-sm-flex align-items-center justify-content-between">
         <div class="col-md-12">
-            <h1 class="h3 mb-0 text-dark"><i class="fas fa-diagram-project"></i> Editing {{ PAGE_TITLE }}<a href="{% url 'admin-project-detail' id=PROJECT.id %}" class="btn btn-outline-danger float-right">Cancel</a></h1>
+            <h1 class="h3 mb-0 text-dark"><i class="fas fa-diagram-project"></i> Editing {{ PAGE_TITLE }}<button type="submit" name="update" class="btn btn-outline-info float-right m-1">Update Project</button><a href="{% url 'admin-project-detail' id=PROJECT.id %}" class="btn btn-outline-danger float-right m-1">Cancel</a></h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'admin-dashboard-home' %}">Admin Dashboard</a></li>
