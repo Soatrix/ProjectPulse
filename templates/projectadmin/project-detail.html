@@ -199,30 +199,31 @@
                     </div>
                     <hr>
                     <div class="form-group">
-                        <button type="button" class="btn btn-outline-danger float-right" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Project</button>
-                        <h5>Delete Project</h5>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>                        <h5>Delete Project</h5>
                         <small>This process is irreversible. Once deleted, it's gone forever.</small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel">Are you sure?</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <p>Are you sure you want to permanently delete the project <strong>{{ PROJECT.name }}</strong>? This action cannot be undone and will result in the loss of all associated tasks, issues, and data. Please confirm that you wish to proceed.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger">Save changes</button>
-          </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Are you sure?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Are you sure you want to permanently delete the project <strong>{{ PROJECT.name }}</strong>? This action cannot be undone and will result in the loss of all associated tasks, issues, and data. Please confirm that you wish to proceed.</div>
+                <div class="modal-footer">
+                    {% csrf_token %}
+					<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+					<button class="btn btn-danger" name="delete" type="submit">Delete</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 </form>
 {% endblock %}
