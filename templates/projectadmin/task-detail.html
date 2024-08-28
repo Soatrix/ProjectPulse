@@ -57,8 +57,12 @@
                     {% if TASK.completed_requirements == TASK.total_requirements %}
                         {% if TASK.status == "not_started" %}
                             <button type="submit" name="mark-started" class="btn btn-outline-success btn-block">Start Task</button>
+                        {% else %}
+                            <button type="submit" name="mark-started" class="btn btn-outline-success btn-block">Reopen Task</button>
                         {% endif %}
-                        <button type="submit" name="mark-complete" class="btn btn-outline-success btn-block">Complete Task</button>
+                        {% if task.status != "completed" %}
+                            <button type="submit" name="mark-complete" class="btn btn-outline-success btn-block">Complete Task</button>
+                        {% endif %}
                         <button type="submit" name="mark-blocked" class="btn btn-outline-danger btn-block">Block Task</button>
                         <button type="submit" name="mark-cancelled" class="btn btn-outline-danger btn-block">Cancel Task</button>
                     {% else %}
