@@ -24,6 +24,15 @@ class AdminProjectDetailView(TemplateView):
         context["PROJECT"] = Project.objects.get(pk=self.kwargs.get("id"))
         context["PAGE_TITLE"] = context["PROJECT"].name
         return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        if "delete" in request.POST:
+            context["PROJECT"].delete()
+            return redirect("admin-projects")
+
+        return self.render_to_response(context)
 class AdminProjectEditView(TemplateView):
     template_name = "projectadmin/project-edit.html"
     def get_context_data(self, **kwargs):
