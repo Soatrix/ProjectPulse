@@ -63,7 +63,7 @@
                     </div>
                     <div class="form-group">
                         <label for="start_date">Project Started <small class="text-danger">required</small></label>
-                        <input class="form-control" name="start_date" id="start_date" value="{{ PROJECT.start_date|date:"yyyy-mm-dd" }}"/>
+                        <input class="form-control" name="start_date" id="start_date" value="{{ PROJECT.start_date|date:"Y-m-d" }}"/>
                     </div>
                     <div class="form-group">
                         {% now "Y-m-d" as current_date %}
