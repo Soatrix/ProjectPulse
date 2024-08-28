@@ -56,13 +56,10 @@
                     <div class="form-group">
                         <label for="project-status">Status</label>
                         <select class="form-select" name="project-status" id="project-status">
-                            {% for value, display in PROJECT.status.choices %}
+                            {% for value, display in STATUSES %}
                                 <option value="{{ value }}">{{ display }}</option>
                             {% endfor %}
                         </select>
-                        <p>{{ PROJECT.status }}</p>
-                        <p>{{ PROJECT.status.choices }}</p>
-                        <p>{{ PROJECT.status.field.choices }}</p>
                     </div>
                     <div class="form-group">
                         <label for="project-start-date">Project Started</label>
