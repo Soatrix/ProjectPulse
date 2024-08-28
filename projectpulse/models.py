@@ -58,7 +58,7 @@ class Task(models.Model):
         return self.requirements.count() + self.issues.count()
 
     def completed_requirements(self):
-        return sum(1 for task in self.requirements if task.status == "completed" or task.status == "cancelled" or task.status == "blocked") + sum(1 for issue in self.issues if issue.status == "resolved" or issue.status == "closed")
+        return sum(1 for task in self.requirements.all() if task.status == "completed" or task.status == "cancelled" or task.status == "blocked") + sum(1 for issue in self.issues.all() if issue.status == "resolved" or issue.status == "closed")
 
 
 class Issue(models.Model):
