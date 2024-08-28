@@ -98,12 +98,12 @@
                         <label for="project-owner">Owner</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="project-owner-tag">@</span>
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="project-owner-tag" name="project-owner" id="project-owner" value="{{ PROJECT.owner.username }} {% if PROJECT.owner.first_name %}({{ PROJECT.owner.first_name }} {{ PROJECT.owner.last_name }}){% endif %}"/>
+                            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="project-owner-tag" name="project-owner" id="project-owner" value="{{ PROJECT.owner.username }} {% if PROJECT.owner.first_name %}({{ PROJECT.owner.first_name }} {{ PROJECT.owner.last_name }}){% endif %}" disabled="disabled"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="project-members">Members</label>
-                        <select multiple class="form-select" name="project-members" id="project-members">
+                        <select multiple class="form-select" name="project-members" id="project-members" disabled="disabled">
                             {% if PROJECT.members.all.count == 0 %}
                                 <option value="0" selected="selected">None</option>
                             {% else %}
