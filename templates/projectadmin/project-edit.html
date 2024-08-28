@@ -55,7 +55,11 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="project-status">Status</label>
-                        <input class="form-control bg-{% if PROJECT.status == "not_started" or PROJECT.status == "blocked" or PROJECT.status == "cancelled" %}blocked{% elif PROJECT.status == "in_progress" or PROJECT.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ PROJECT.get_status_display }}"/>
+                        <select class="form-select" name="project-status" id="project-status">
+                            {% for value, display in Task._meta.get_field('status').choices %}
+                                <option value="{{ value }}">{{ display }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="project-start-date">Project Started</label>
