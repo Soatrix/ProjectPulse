@@ -36,6 +36,7 @@ class ProjectNote(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='project_notes')
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'Note by {self.author} on {self.project.name}'
@@ -76,6 +77,7 @@ class TaskNote(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='task_notes')
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'Note by {self.author} on {self.task.name}'
@@ -115,6 +117,7 @@ class IssueNote(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='issue_notes')
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'Note by {self.author} on {self.issue.title}'
