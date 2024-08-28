@@ -54,6 +54,12 @@ class Task(models.Model):
     def __str__(self):
         return self.name
 
+    def total_requirements(self):
+        return self.requirements.count() + self.issues.count()
+
+    def completed_requirements(self):
+        return sum(1 for task in self.requirements if task.status == "completed" or task.status == "cancelled" or task.status == "blocked") + sum(1 for issue in self.issues if issue.status == "resolved" or issue.status == "closed")
+
 
 class Issue(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='issues', blank=True, null=True)
