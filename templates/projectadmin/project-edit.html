@@ -54,8 +54,8 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="project-status">Status <small class="text-danger">required</small></label>
-                        <select class="form-select" name="project-status" id="project-status">
+                        <label for="status">Status <small class="text-danger">required</small></label>
+                        <select class="form-select" name="status" id="status">
                             {% for value, display in STATUSES.choices %}
                                 <option value="{{ value }}" {% if PROJECT.status == value %}selected="selected"{% endif %}>{{ display }}</option>
                             {% endfor %}

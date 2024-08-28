@@ -40,7 +40,7 @@ class AdminProjectEditView(TemplateView):
             fields = ["name", "status", "start_date", "end_date", "description"]
             started = False
             for field in fields:
-                if field not in request.POST:
+                if field not in request.POST and field in requiredFields:
                     if not started:
                         started = True
                         context["error"] = "<ul>"
