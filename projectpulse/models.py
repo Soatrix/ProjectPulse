@@ -7,19 +7,20 @@ def project_image_upload_path(instance, filename):
     return os.path.join('static', 'projects', str(instance.id), "profile.png")
 
 class Project(models.Model):
+    class Status(models.TextChoices):
+        NOT_STARTED = 'not_started', 'Not Started'
+        IN_PROGRESS = 'in_progress', 'In Progress'
+        COMPLETED = 'completed', 'Completed'
+        ON_HOLD = 'on_hold', 'On Hold'
+        CANCELLED = 'cancelled', 'Cancelled'
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_projects')
     members = models.ManyToManyField(User, related_name='projects', blank=True)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
-    status = models.CharField(max_length=50, choices=[
-        ('not_started', 'Not Started'),
-        ('in_progress', 'In Progress'),
-        ('completed', 'Completed'),
-        ('on_hold', 'On Hold'),
-        ('cancelled', 'Cancelled'),
-    ], default='not_started')
+    status = models.CharField(max_length=50, choices=Status.choices, default=Status.NOT_STARTED)
 
     # Custom fields
     custom_fields = models.JSONField(default=dict, blank=True, null=True)
@@ -31,19 +32,20 @@ class Project(models.Model):
         return self.name
 
 class Task(models.Model):
+    class Status(models.TextChoices):
+        NOT_STARTED = 'not_started', 'Not Started'
+        IN_PROGRESS = 'in_progress', 'In Progress'
+        COMPLETED = 'completed', 'Completed'
+        BLOCKED = 'blocked', 'Blocked'
+        CANCELLED = 'cancelled', 'Cancelled'
+
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='tasks')
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_tasks')
     start_date = models.DateField()
     due_date = models.DateField(blank=True, null=True)
-    status = models.CharField(max_length=50, choices=[
-        ('not_started', 'Not Started'),
-        ('in_progress', 'In Progress'),
-        ('completed', 'Completed'),
-        ('blocked', 'Blocked'),
-        ('cancelled', 'Cancelled'),
-    ], default='not_started')
+    status = models.CharField(max_length=50, choices=Status.choices, default=Status.NOT_STARTED)
 
     # Task dependencies
     requirements = models.ManyToManyField('self', blank=True, related_name='waited_on', symmetrical=False)
@@ -58,28 +60,30 @@ class Task(models.Model):
         return self.requirements.count() + self.issues.count()
 
     def completed_requirements(self):
-        return sum(1 for task in self.requirements.all() if task.status == "completed" or task.status == "cancelled" or task.status == "blocked") + sum(1 for issue in self.issues.all() if issue.status == "resolved" or issue.status == "closed")
+        return sum(1 for task in self.requirements.all() if task.status in [Task.Status.COMPLETED, Task.Status.CANCELLED, Task.Status.BLOCKED]) + sum(1 for issue in self.issues.all() if issue.status in [Issue.Status.RESOLVED, Issue.Status.CLOSED])
 
 
 class Issue(models.Model):
+    class Status(models.TextChoices):
+        OPEN = 'open', 'Open'
+        IN_PROGRESS = 'in_progress', 'In Progress'
+        RESOLVED = 'resolved', 'Resolved'
+        CLOSED = 'closed', 'Closed'
+
+    class Severity(models.TextChoices):
+        LOW = 'low', 'Low'
+        MEDIUM = 'medium', 'Medium'
+        HIGH = 'high', 'High'
+        CRITICAL = 'critical', 'Critical'
+
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='issues', blank=True, null=True)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='issues', blank=True, null=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     reporter = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='reported_issues')
     assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_issues')
-    status = models.CharField(max_length=50, choices=[
-        ('open', 'Open'),
-        ('in_progress', 'In Progress'),
-        ('resolved', 'Resolved'),
-        ('closed', 'Closed'),
-    ], default='open')
-    severity = models.CharField(max_length=50, choices=[
-        ('low', 'Low'),
-        ('medium', 'Medium'),
-        ('high', 'High'),
-        ('critical', 'Critical'),
-    ], default='medium')
+    status = models.CharField(max_length=50, choices=Status.choices, default=Status.OPEN)
+    severity = models.CharField(max_length=50, choices=Severity.choices, default=Severity.MEDIUM)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
