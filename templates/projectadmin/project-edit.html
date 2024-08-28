@@ -57,7 +57,7 @@
                         <label for="project-status">Status</label>
                         <select class="form-select" name="project-status" id="project-status">
                             {% for value in STATUSES %}
-                                <option value="{{ value.0 }}">{{ value.1 }}</option>
+                                <option value="{{ value }}">{{ value }}</option>
                             {% endfor %}
                         </select>
                     </div>
