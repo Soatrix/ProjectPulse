@@ -23,13 +23,12 @@ class ProjectAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
         if change:  # If the object is being changed (not created)
-            changes = self.get_changes(obj)
             ActivityLog.objects.create(
                 model_name=obj.__class__.__name__,
                 object_id=obj.pk,
                 action_type=ActivityLog.ActionType.UPDATED,
                 changed_by=request.user,
-                changes=changes
+                changes=self.changes
             )
 
     def get_changes(self, obj):
