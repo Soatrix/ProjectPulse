@@ -55,23 +55,32 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="col-xl-12 col-md-12 mb-4">
-                        <div class="card border-left-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} text-uppercase mb-1">Tasks {% if PROJECT.total_tasks == 0 %}Created{% else %}Completed{% endif %}</div>
-                                        <div class="h5 mb-0 font-weight-bold">{{ PROJECT.total_tasks_completed }}/{{ PROJECT.total_tasks }}</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-bars-progress fa-2x"></i>
-                                    </div>
+                    <div class="card border-left-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} text-uppercase mb-1">Tasks {% if PROJECT.total_tasks == 0 %}Created{% else %}Completed{% endif %}</div>
+                                    <div class="h5 mb-0 font-weight-bold">{{ PROJECT.total_tasks_completed }}<small>/{{ PROJECT.total_tasks }}</small></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-list-check fa-2x"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <h2><span class="badge badge-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %}">{{ PROJECT.total_tasks_completed }}/{{ PROJECT.total_tasks }} Tasks {% if PROJECT.total_tasks == 0 %}Created{% else %}Completed{% endif %}</span></h2>
-                    <h2><span class="badge badge-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %}">{{ PROJECT.total_issues_resolved }} Issues {% if PROJECT.total_issues == 0 %}Reported{% else %}Resolved{% endif %}</span></h2>
+                    <div class="card border-left-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} text-uppercase mb-1">Issues {% if PROJECT.total_issues == 0 %}Reported{% else %}Resolved{% endif %}</div>
+                                    <div class="h5 mb-0 font-weight-bold">{{ PROJECT.total_issues_resolved }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-list-check fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
