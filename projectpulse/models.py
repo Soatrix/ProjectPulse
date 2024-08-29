@@ -1,13 +1,58 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 import os, markdown2, bleach, html
+
+class ActivityLog(models.Model):
+    class ActionType(models.TextChoices):
+        CREATED = 'created', 'Created'
+        UPDATED = 'updated', 'Updated'
+        DELETED = 'deleted', 'Deleted'
+
+    model_name = models.CharField(max_length=255)
+    object_id = models.PositiveIntegerField()
+    action_type = models.CharField(max_length=10, choices=ActionType.choices)
+    changed_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+    changes = models.JSONField(default=dict, blank=True, null=True)  # Store changes as a JSON field
+
+    def __str__(self):
+        return f'{self.get_action_type_display()} {self.model_name} (ID: {self.object_id}) by {self.changed_by} at {self.timestamp}'
+
+    class Meta:
+        ordering = ['-timestamp']
+
+class TrackableModel(models.Model):
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old_instance = self.__class__.objects.get(pk=self.pk)
+            changes = {}
+            for field in self._meta.fields:
+                field_name = field.name
+                old_value = getattr(old_instance, field_name)
+                new_value = getattr(self, field_name)
+                if old_value != new_value:
+                    changes[field_name] = {'old': old_value, 'new': new_value}
+            if changes:
+                ActivityLog.objects.create(
+                    model_name=self.__class__.__name__,
+                    object_id=self.pk,
+                    action_type=ActivityLog.ActionType.UPDATED,
+                    changed_by=self.owner if hasattr(self, 'owner') else None,
+                    changes=changes
+                )
+        super().save(*args, **kwargs)
+
+    class Meta:
+        abstract = True
 
 def project_image_upload_path(instance, filename):
     # This will upload the image to 'projects/<project_id>/<filename>'
     return os.path.join('static', 'projects', str(instance.id), "profile.png")
 
-class Project(models.Model):
+class Project(TrackableModel):
     class Status(models.TextChoices):
         NOT_STARTED = 'not_started', 'Not Started'
         IN_PROGRESS = 'in_progress', 'In Progress'
@@ -82,7 +127,7 @@ class ProjectNote(models.Model):
     def __str__(self):
         return f'Note by {self.author} on {self.project.name}'
 
-class Task(models.Model):
+class Task(TrackableModel):
     class Status(models.TextChoices):
         NOT_STARTED = 'not_started', 'Not Started'
         IN_PROGRESS = 'in_progress', 'In Progress'
@@ -142,7 +187,7 @@ class TaskNote(models.Model):
     def __str__(self):
         return f'Note by {self.author} on {self.task.name}'
 
-class Issue(models.Model):
+class Issue(TrackableModel):
     class Status(models.TextChoices):
         OPEN = 'open', 'Open'
         IN_PROGRESS = 'in_progress', 'In Progress'
@@ -197,3 +242,27 @@ class IssueNote(models.Model):
 
     def __str__(self):
         return f'Note by {self.author} on {self.issue.title}'
+
+@receiver(post_save, sender=Project)
+@receiver(post_save, sender=Task)
+@receiver(post_save, sender=Issue)
+def log_model_change(sender, instance, created, **kwargs):
+    if created:
+        ActivityLog.objects.create(
+            model_name=sender.__name__,
+            object_id=instance.id,
+            action_type=ActivityLog.ActionType.CREATED,
+            changed_by=instance.owner if hasattr(instance, 'owner') else None
+        )
+    # `changes` field will be populated in the overridden `save` method
+
+@receiver(post_delete, sender=Project)
+@receiver(post_delete, sender=Task)
+@receiver(post_delete, sender=Issue)
+def log_model_delete(sender, instance, **kwargs):
+    ActivityLog.objects.create(
+        model_name=sender.__name__,
+        object_id=instance.id,
+        action_type=ActivityLog.ActionType.DELETED,
+        changed_by=instance.owner if hasattr(instance, 'owner') else None
+    )
