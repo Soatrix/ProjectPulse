@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, post_delete
@@ -77,8 +78,29 @@ class Project(TrackableModel):
     def __str__(self):
         return self.name
 
-    def get_actvitiy_logs(self):
-        return ActivityLog.objects.filter(model_name="Project", object_id=self.id)
+    def get_activity_logs(self):
+        """
+        Retrieve all activity logs related to this project, including logs for
+        associated tasks and issues.
+        """
+        # Fetch logs for the project itself
+        project_logs = ActivityLog.objects.filter(
+            model_name="Project", object_id=self.id
+        )
+
+        # Fetch logs for associated tasks
+        task_logs = ActivityLog.objects.filter(
+            Q(model_name="Task") & Q(object_id__in=self.tasks.values_list('id', flat=True))
+        )
+
+        # Fetch logs for associated issues
+        issue_logs = ActivityLog.objects.filter(
+            Q(model_name="Issue") & Q(object_id__in=self.issues.values_list('id', flat=True))
+        )
+
+        # Combine all logs and order them by timestamp
+        all_logs = project_logs | task_logs | issue_logs
+        return all_logs.order_by('-timestamp')
 
     def description_markdown(self):
         text = markdown2.markdown(self.description, extras=["cuddled-lists"])
