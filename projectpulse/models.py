@@ -19,6 +19,12 @@ class ActivityLog(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     changes = models.JSONField(default=dict, blank=True, null=True)  # Store changes as a JSON field
 
+    def get_changes(self):
+        """
+        Return a list of changes for the log entry.
+        """
+        return list(self.changes.keys()) if self.changes else []
+
     def __str__(self):
         return f'{self.get_action_type_display()} {self.model_name} (ID: {self.object_id}) by {self.changed_by} at {self.timestamp}'
 

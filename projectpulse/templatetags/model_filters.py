@@ -15,3 +15,22 @@ def get_object(model_name, object_id):
         return model.objects.get(id=object_id)
     except (model.DoesNotExist, ValueError, TypeError) as e:
         return None
+
+
+@register.filter
+def format_list(value):
+    """
+    Format a list as a comma-separated string with the final item preceded by '&'.
+
+    Usage in template: {{ my_list|format_list }}
+    """
+    if not isinstance(value, list):
+        return value
+
+    if len(value) == 0:
+        return ''
+
+    if len(value) == 1:
+        return str(value[0])
+
+    return ', '.join(map(str, value[:-1])) + ' & ' + str(value[-1])

@@ -131,11 +131,10 @@
                             <h4 class="card-title text-white float-left">Project Activity</h4>
                         </div>
                         <div class="card-body">
-                            <p>{{ PROJECT.get_activity_logs }}</p>
                             <ul class="list-unstyled">
                                 {% for log in PROJECT.get_activity_logs %}
                                     {% with log.model_name|get_object:log.object_id as logObject %}
-                                    <li>{{ logObject.name }} was {{ log.action_type }} at {{ log.timestamp }}</li>
+                                    <li>{{ log.model_name }} #{{ log.id }}{% if log.action_type == "updated" %} <span class="badge badge-secondary">{{ log.get_changes|format_list }}</span>{% endif %} was {{ log.action_type }} at {{ log.timestamp }}</li>
                                     {% endwith %}
                                 {% endfor %}
                             </ul>
