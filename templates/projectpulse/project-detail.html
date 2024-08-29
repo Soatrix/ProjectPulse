@@ -61,7 +61,7 @@
                                     </div>
                                     {% if PROJECT.end_date %}
                                         <div class="form-floating mb-3">
-                                            <input type="date" class="form-control {% if PROJECT.end_date|date:"Y-m-d" < current_date and PROJECT.status != "completed" %}is-invalid{% endif %}" id="end_date" name="end_date" value="{{ PROJECT.end_date|date:"Y-m-d" }}" />
+                                            <input type="date" class="form-control {% if PROJECT.end_date|date:"Y-m-d" < current_date and PROJECT.status != "completed" %}is-invalid{% endif %}" id="end_date" name="end_date" value="{{ PROJECT.end_date|date:"Y-m-d" }}" disabled="disabled"/>
                                             <label for="end_date">Date {% if PROJECT.end_date|date:"Y-m-d" > current_date %}Ending{% else %}Ended{% endif %}</label>
                                         </div>
                                     {% endif %}
