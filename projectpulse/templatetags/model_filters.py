@@ -16,7 +16,18 @@ def get_object(model_name, object_id):
     except (model.DoesNotExist, ValueError, TypeError) as e:
         return None
 
+
 @register.filter
+def dict_keys(value):
+    """
+    Returns the keys of the dictionary as a list.
+
+    Usage in a template:
+    {{ my_dict|dict_keys }}
+    """
+    if isinstance(value, dict):
+        return list(value.keys())
+    return []
 
 @register.filter
 def format_list(value):
