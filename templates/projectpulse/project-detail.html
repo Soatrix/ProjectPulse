@@ -48,13 +48,13 @@
                 <div class="col-md-8">
                     <div class="card text-dark mb-3">
                         <div class="card-header">
-                            <h5 class="card-title text-white float-left">Project Insights</h5>
+                            <h4 class="card-title text-white float-left">Project Insights</h4>
                             <span class="badge badge-{% if PROJECT.status == "completed" %}success{% elif PROJECT.status == "in_progress" or PROJECT.status == "on_hold" %}warning{% else %}danger{% endif %} float-right">{{ PROJECT.get_status_display }}</span>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <h6 class="card-title text-dark">Description</h6>
+                                    <h5 class="card-title text-dark">Description</h5>
                                     {% if PROJECT.description %}
                                         <p>{{ PROJECT.description }}</p>
                                     {% else %}
