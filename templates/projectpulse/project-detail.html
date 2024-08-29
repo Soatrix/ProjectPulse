@@ -53,7 +53,9 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-8"></div>
+                                <div class="col-md-8">
+                                    <p>{{ PROJECT.description }}</p>
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-floating mb-3">
                                         <input type="date" class="form-control {% if PROJECT.status != "not_started" %}is-valid{% endif %}" id="start_date" name="start_date" value="{{ PROJECT.start_date|date:"Y-m-d" }}" disabled="disabled"/>
