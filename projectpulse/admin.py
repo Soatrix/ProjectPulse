@@ -1,8 +1,5 @@
 from django.contrib import admin
 from .models import Project, ProjectNote, Task, TaskNote, Issue, IssueNote, ActivityLog
-from django.utils.html import format_html
-from django.contrib.auth.models import User
-import json
 
 class ProjectNoteInline(admin.TabularInline):
     model = ProjectNote
@@ -16,34 +13,9 @@ class IssueNoteInline(admin.TabularInline):
     model = IssueNote
     extra = 1
 
-class ActivityLogInline(admin.TabularInline):
-    model = ActivityLog
-    extra = 0
-    readonly_fields = ('timestamp', 'model_name', 'action_type', 'object_id', 'changed_by', 'changes')
-    can_delete = False
-    verbose_name = 'Activity Log'
-    verbose_name_plural = 'Activity Logs'
-
-    def get_readonly_fields(self, request, obj=None):
-        if obj:  # If an instance is being edited
-            return self.readonly_fields + ('model_name', 'object_id', 'action_type', 'changed_by', 'timestamp', 'changes')
-        return self.readonly_fields
-
-    def has_add_permission(self, request, obj=None):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    def has_view_permission(self, request, obj=None):
-        return True
-
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    inlines = [ProjectNoteInline, ActivityLogInline]
+    inlines = [ProjectNoteInline]
     list_display = ('name', 'owner', 'start_date', 'end_date', 'status')
     search_fields = ('name', 'owner__username')
     list_filter = ('status', 'start_date', 'end_date')
@@ -72,7 +44,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    inlines = [TaskNoteInline, ActivityLogInline]
+    inlines = [TaskNoteInline]
     list_display = ('name', 'project', 'assignee', 'start_date', 'due_date', 'status')
     search_fields = ('name', 'project__name', 'assignee__username')
     list_filter = ('status', 'start_date', 'due_date')
@@ -101,7 +73,7 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(Issue)
 class IssueAdmin(admin.ModelAdmin):
-    inlines = [IssueNoteInline, ActivityLogInline]
+    inlines = [IssueNoteInline]
     list_display = ('title', 'project', 'task', 'reporter', 'assignee', 'status', 'severity', 'created_at')
     search_fields = ('title', 'project__name', 'task__name', 'reporter__username', 'assignee__username')
     list_filter = ('status', 'severity', 'created_at', 'updated_at')
@@ -128,6 +100,9 @@ class IssueAdmin(admin.ModelAdmin):
                 changes[field_name] = {'old': old_value, 'new': new_value}
         return changes
 
-    def get_field_value(self, field_name):
-        """Helper method to get the field value."""
-        return getattr(self, field_name, None)
+@admin.register(ActivityLog)
+class ActivityLogAdmin(admin.ModelAdmin):
+    list_display = ('model_name', 'object_id', 'action_type', 'changed_by', 'timestamp', 'changes')
+    search_fields = ('model_name', 'object_id', 'action_type', 'changed_by__username')
+    list_filter = ('action_type', 'timestamp')
+    readonly_fields = ('model_name', 'object_id', 'action_type', 'changed_by', 'timestamp', 'changes')
