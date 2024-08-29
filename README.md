@@ -1,7 +1,7 @@
-# Project Nest
+# Project Pulse
 
 ## Description
-Project Nest is a web-based project management tool designed to simplify the management and collaboration of various types of projects. It is tailored for teams and individuals who need an efficient and user-friendly platform to oversee project tasks, monitor progress, and address issues in real-time.
+Project Pulse is a web-based project management tool designed to simplify the management and collaboration of various types of projects. It is tailored for teams and individuals who need an efficient and user-friendly platform to oversee project tasks, monitor progress, and address issues in real-time.
 
 With Project Nest, users can create and manage projects, assign tasks, track progress, and collaborate with team members. The platform supports advanced project management features, including task dependencies, issue tracking, custom fields, and role-based permissions. Additionally, it allows users to upload a logo or profile image for each project, providing a more personalized experience.
 
