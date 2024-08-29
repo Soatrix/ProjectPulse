@@ -131,6 +131,7 @@
                             <h4 class="card-title text-white float-left">Project Activity</h4>
                         </div>
                         <div class="card-body">
+                            <p>{{ PROJECT.get_activity_logs }}</p>
                             <ul class="list-unstyled">
                                 {% for log in PROJECT.get_activity_logs %}
                                     {% with log.model_name|get_object:log.object_id as logObject %}
