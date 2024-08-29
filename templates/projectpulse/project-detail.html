@@ -142,6 +142,7 @@
                                                     {% else %}
                                                         {{ log.timestamp|date:"Y-m-d g:i:s A" }}
                                                     {% endif %}
+                                                    <p>{{ current_date|date:"1: Y-m-d" }} {{ log.timestamp|date:"2: Y-m-d" }}</p>
                                                 {% endwith %}
                                             </span>
                                         </td>
