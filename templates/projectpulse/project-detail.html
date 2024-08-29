@@ -54,11 +54,9 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <h5 class="card-title text-dark">Description</h5>
+                                    <h5 class="card-title text-dark font-weight-bold">Description</h5>
                                     {% if PROJECT.description %}
-                                        {% autoescape off %}
-                                            {{ PROJECT.description_markdown }}
-                                        {% endautoescape %}
+                                        {{ PROJECT.description_markdown|safe }}
                                     {% else %}
                                         <p>This project does not have a description yet.</p>
                                     {% endif %}
