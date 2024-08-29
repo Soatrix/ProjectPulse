@@ -48,7 +48,8 @@
                 <div class="col-md-8">
                     <div class="card text-dark mb-3">
                         <div class="card-header">
-                            <h5 class="card-title text-white float-left">Project Insights<span class="badge badge-{% if PROJECT.status == "completed" %}success{% elif PROJECT.status == "in_progress" or PROJECT.status == "on_hold" %}warning{% else %}danger{% endif %} float-right">{{ PROJECT.get_status_display }}</span></h5>
+                            <h5 class="card-title text-white float-left">Project Insights</h5>
+                            <span class="badge badge-{% if PROJECT.status == "completed" %}success{% elif PROJECT.status == "in_progress" or PROJECT.status == "on_hold" %}warning{% else %}danger{% endif %} float-right">{{ PROJECT.get_status_display }}</span>
                         </div>
                         <div class="card-body">
                         </div>
