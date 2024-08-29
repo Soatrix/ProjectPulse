@@ -52,6 +52,15 @@
                             <span class="badge badge-{% if PROJECT.status == "completed" %}success{% elif PROJECT.status == "in_progress" or PROJECT.status == "on_hold" %}warning{% else %}danger{% endif %} float-right">{{ PROJECT.get_status_display }}</span>
                         </div>
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8"></div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-3">
+                                        <input type="date" class="form-control is-valid" id="start_date" name="start_date" value="{{ PROJECT.start_date }}" />
+                                        <label for="start_date">Date Started</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
