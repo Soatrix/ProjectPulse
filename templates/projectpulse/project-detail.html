@@ -161,7 +161,7 @@
                                                 {% if log.action_type == "updated" and log.changes|length == 1 and log.changes.status %}
                                                     was marked as <span class="badge badge-{{ log.get_status_color }}">{{ logObject.get_status_display }}</span>
                                                 {% elif log.action_type == "updated" %}
-                                                    had the values <span class="badge badge-secondary">{{ log.changes.items|dict_keys|format_list }}</span>
+                                                    had the values <span class="badge badge-secondary">{{ log.changes|dict_keys|format_list }}</span>
                                                 {% elif log.action_type == "created" %}
                                                     was <span class="badge badge-success">created</span>
                                                 {% else %}
