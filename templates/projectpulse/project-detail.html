@@ -167,6 +167,9 @@
                                                 {% else %}
                                                     was <span class="badge badge-danger">deleted</span>
                                                 {% endif %}
+                                                {% if log.changed_by %}
+                                                     by {% if log.changed_by.first_name %}{{ log.changed_by.first_name }} {{ log.changed_by.last_name }}{% else %}{{ log.changed_by.username }}{% endif %}
+                                                {% endif %}
                                             {% endwith %}
                                         </td>
                                     </tr>
