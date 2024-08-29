@@ -16,6 +16,7 @@ def get_object(model_name, object_id):
     except (model.DoesNotExist, ValueError, TypeError) as e:
         return None
 
+@register.filter
 
 @register.filter
 def format_list(value):

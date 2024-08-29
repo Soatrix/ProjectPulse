@@ -19,6 +19,44 @@ class ActivityLog(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     changes = models.JSONField(default=dict, blank=True, null=True)  # Store changes as a JSON field
 
+    def get_status_color(self):
+        if self.model_name == "Task":
+            if self.changes and len(self.changes) == 1 and self.changes.status:
+                if self.changes.status == "not_started" or self.changes.status == "blocked" or self.changes.status == "cancelled":
+                    return "danger"
+                elif self.changes.status == "in_progress":
+                    return "warning"
+                else:
+                    return "success"
+            else:
+                return "secondary"
+        elif self.model_name == "Project":
+            if self.changes and len(self.changes) == 1 and self.changes.status:
+                if self.changes.status == "not_started" or self.changes.status == "cancelled":
+                    return "danger"
+                elif self.changes.status == "in_progress" or self.changes.status == "on_hold":
+                    return "warning"
+                else:
+                    return "success"
+            else:
+                return "secondary"
+        elif self.model_name == "Issue":
+            OPEN = 'open', 'Open'
+            IN_PROGRESS = 'in_progress', 'In Progress'
+            RESOLVED = 'resolved', 'Resolved'
+            CLOSED = 'closed', 'Closed'
+            if self.changes and len(self.changes) == 1 and self.changes.status:
+                if self.changes.status == "closed":
+                    return "danger"
+                elif self.changes.status == "in_progress":
+                    return "warning"
+                else:
+                    return "success"
+            else:
+                return "secondary"
+        else:
+            return "secondary"
+
     def __str__(self):
         return f'{self.get_action_type_display()} {self.model_name} (ID: {self.object_id}) by {self.changed_by} at {self.timestamp}'
 
