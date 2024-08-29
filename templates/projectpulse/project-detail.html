@@ -56,7 +56,7 @@
                                 <div class="col-md-8"></div>
                                 <div class="col-md-4">
                                     <div class="form-floating mb-3">
-                                        <input type="date" class="form-control is-valid" id="start_date" name="start_date" value="{{ PROJECT.start_date|date:"Y-m-d" }}" />
+                                        <input type="date" class="form-control is-valid" id="start_date" name="start_date" value="{{ PROJECT.start_date|date:"Y-m-d" }}" disabled="disabled"/>
                                         <label for="start_date">Date Started</label>
                                     </div>
                                     {% if PROJECT.end_date %}
