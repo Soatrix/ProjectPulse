@@ -22,9 +22,9 @@ class ActivityLog(models.Model):
     def get_status_color(self):
         if self.model_name == "Task":
             if self.changes and len(self.changes) == 1 and "status" in self.changes:
-                if self.changes["status"] == "not_started" or self.changes["status"] == "blocked" or self.changes["status"] == "cancelled":
+                if self.changes["status"]["new"] == "not_started" or self.changes["status"]["new"] == "blocked" or self.changes["status"]["new"] == "cancelled":
                     return "danger"
-                elif self.changes["status"] == "in_progress":
+                elif self.changes["status"]["new"] == "in_progress":
                     return "warning"
                 else:
                     return "success"
@@ -32,23 +32,19 @@ class ActivityLog(models.Model):
                 return "secondary"
         elif self.model_name == "Project":
             if self.changes and len(self.changes) == 1 and "status" in self.changes:
-                if self.changes["status"] == "not_started" or self.changes["status"] == "cancelled":
+                if self.changes["status"]["new"] == "not_started" or self.changes["status"]["new"] == "cancelled":
                     return "danger"
-                elif self.changes["status"] == "in_progress" or self.changes["status"] == "on_hold":
+                elif self.changes["status"]["new"] == "in_progress" or self.changes["status"]["new"] == "on_hold":
                     return "warning"
                 else:
                     return "success"
             else:
                 return "secondary"
         elif self.model_name == "Issue":
-            OPEN = 'open', 'Open'
-            IN_PROGRESS = 'in_progress', 'In Progress'
-            RESOLVED = 'resolved', 'Resolved'
-            CLOSED = 'closed', 'Closed'
             if self.changes and len(self.changes) == 1 and "status" in self.changes:
-                if self.changes["status"] == "closed":
+                if self.changes["status"]["new"] == "closed":
                     return "danger"
-                elif self.changes["status"] == "in_progress":
+                elif self.changes["status"]["new"] == "in_progress":
                     return "warning"
                 else:
                     return "success"

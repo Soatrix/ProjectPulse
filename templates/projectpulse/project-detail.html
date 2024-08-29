@@ -159,7 +159,7 @@
                                             {% with log.model_name|get_object:log.object_id as logObject %}
                                                 {{ log.model_name }} "{{ logObject.name }}" was
                                                 {% if log.action_type == "updated" and log.changes|length == 1 and log.changes.status %}
-                                                    marked as <span class="badge badge-{{ log.get_status_color }}">{{ log.changes.status.new }}</span>
+                                                    marked as <span class="badge badge-{{ log.get_status_color }}">{{ logObject.get_status_display }}</span>
                                                 {% elif log.action_type == "created" %}
                                                     <span class="badge badge-success">created</span>
                                                 {% else %}
