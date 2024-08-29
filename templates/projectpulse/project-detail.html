@@ -17,7 +17,7 @@
         <div class="col-md-7">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="dashboard-tab" data-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="true">Dashboard</a>
+                <a class="nav-link active" id="dashboard-tab" href="{% url 'project-detail' id=PROJECT.id %}">Dashboard</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="tasks-tab" data-toggle="tab" href="#tasks" role="tab" aria-controls="tasks" aria-selected="false">Tasks</a>
@@ -43,146 +43,138 @@
             </div>
         {% endif %}
     </div>
-    <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active mb-3" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card text-dark mb-3">
-                        <div class="card-header">
-                            <h4 class="card-title text-white float-left">Project Insights</h4>
-                            <h4><span class="badge badge-{% if PROJECT.status == "completed" %}success{% elif PROJECT.status == "in_progress" or PROJECT.status == "on_hold" %}warning{% else %}danger{% endif %} float-right">{{ PROJECT.get_status_display }}</span></h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <h5 class="card-title text-dark font-weight-bold">Description</h5>
-                                    {% if PROJECT.description %}
-                                        {{ PROJECT.description_markdown|safe }}
-                                    {% else %}
-                                        <p>This project does not have a description yet.</p>
-                                    {% endif %}
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating mb-3">
-                                        <input type="date" class="form-control {% if PROJECT.status != "not_started" %}is-valid{% endif %}" id="start_date" name="start_date" value="{{ PROJECT.start_date|date:"Y-m-d" }}" disabled="disabled"/>
-                                        <label for="start_date">Date Started</label>
-                                    </div>
-                                    {% if PROJECT.end_date %}
-                                        <div class="form-floating mb-3">
-                                            <input type="date" class="form-control {% if PROJECT.end_date|date:"Y-m-d" < current_date and PROJECT.status != "completed" %}is-invalid{% endif %}" id="end_date" name="end_date" value="{{ PROJECT.end_date|date:"Y-m-d" }}" disabled="disabled"/>
-                                            <label for="end_date">Date {% if PROJECT.end_date|date:"Y-m-d" > current_date %}Ending{% else %}Ended{% endif %}</label>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h4 class="card-title text-white float-left">Project Insights</h4>
+                    <h4><span class="badge badge-{% if PROJECT.status == "completed" %}success{% elif PROJECT.status == "in_progress" or PROJECT.status == "on_hold" %}warning{% else %}danger{% endif %} float-right">{{ PROJECT.get_status_display }}</span></h4>
                 </div>
-                <div class="col-md-4">
-                    {% if PROJECT.total_tasks_overdue.count > 0 %}
-                        <div class="col-xl-12 col-md-12 mb-4">
-                            <div class="card border-left-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Task{% if PROJECT.total_tasks_overdue.count > 1 %}s{% endif %} Overdue</div>
-                                            <div class="h2 mb-0 font-weight-bold">{{ PROJECT.total_tasks_overdue.count }}</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-list-check fa-2x"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5 class="card-title text-dark font-weight-bold">Description</h5>
+                            {% if PROJECT.description %}
+                                {{ PROJECT.description_markdown|safe }}
+                            {% else %}
+                                <p>This project does not have a description yet.</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control {% if PROJECT.status != "not_started" %}is-valid{% endif %}" id="start_date" name="start_date" value="{{ PROJECT.start_date|date:"Y-m-d" }}" disabled="disabled"/>
+                                <label for="start_date">Date Started</label>
                             </div>
-                        </div>
-                    {% endif %}
-                    <div class="col-xl-12 col-md-12 mb-4">
-                        <div class="card border-left-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} text-uppercase mb-1">Tasks {% if PROJECT.total_tasks == 0 %}Created{% else %}Completed{% endif %}</div>
-                                        <div class="h2 mb-0 font-weight-bold">{% if PROJECT.total_tasks > 0 %}{{ PROJECT.total_tasks_completed }}/{% endif %}{{ PROJECT.total_tasks }}</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-list-check fa-2x"></i>
-                                    </div>
+                            {% if PROJECT.end_date %}
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control {% if PROJECT.end_date|date:"Y-m-d" < current_date and PROJECT.status != "completed" %}is-invalid{% endif %}" id="end_date" name="end_date" value="{{ PROJECT.end_date|date:"Y-m-d" }}" disabled="disabled"/>
+                                    <label for="end_date">Date {% if PROJECT.end_date|date:"Y-m-d" > current_date %}Ending{% else %}Ended{% endif %}</label>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
-                    </div>
-                    <div class="col-xl-12 col-md-12 mb-4">
-                        <div class="card border-left-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} text-uppercase mb-1">Issues {% if PROJECT.total_issues == 0 %}Reported{% else %}Resolved{% endif %}</div>
-                                        <div class="h2 mb-0 font-weight-bold">{% if project.total_issues > 0 %}{{ PROJECT.total_issues_resolved }}/{% endif %}{{ PROJECT.total_issues }}</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-circle-exclamation fa-2x"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card text-dark mb-3">
-                        <div class="card-header">
-                            <h4 class="card-title text-white float-left">Project Activity</h4>
-                        </div>
-                        <table class="table table-borderless {% if user.profile.dark_mode %}table-dark{% else %}table-light{% endif %} table-hover">
-                            <tbody>
-                                {% for log in PROJECT.get_activity_logs %}
-                                    <tr>
-                                        <td>
-                                            <span class="badge badge-secondary">
-                                                {% now "Y-m-d" as current_date %}
-                                                {% now "w" as current_weekday %}
-                                                {% with log.timestamp|date:"Y-m-d" as log_date %}
-                                                {% with log.timestamp|date:"w" as log_weekday %}
-                                                {% if log_date == current_date %}
-                                                    Today {{ log.timestamp|date:"g:i A" }}
-                                                {% elif log_date == current_date|date:"Y-m-d"|add:"-1 day" %}
-                                                    Yesterday {{ log.timestamp|date:"g:i A" }}
-                                                {% elif log_date > current_date|date:"Y-m-d"|add:"-7 day" %}
-                                                    {{ current_date|date:"Y-m-d"|date:"-log_date"|timesince }} days ago {{ log.timestamp|date:"g:i A" }}
-                                                {% elif log_weekday < current_weekday and log_date > current_date|date:"Y-m-d"|add:"-7 day" %}
-                                                    Last Week {{ log.timestamp|date:"g:i A" }}
-                                                {% else %}
-                                                    {{ log.timestamp|date:"Y-m-d g:i A" }}
-                                                {% endif %}
-                                                {% endwith %}
-                                                {% endwith %}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            {% with log.model_name|get_object:log.object_id as logObject %}
-                                                {{ log.model_name }}{% if log.model_name != "Project" %} "{{ logObject.name }}"{% endif %}
-                                                {% if log.action_type == "updated" and log.changes|length == 1 and log.changes.status %}
-                                                    was marked as <span class="badge badge-{{ log.get_status_color }}">{{ logObject.get_status_display }}</span>
-                                                {% elif log.action_type == "updated" %}
-                                                    had the value{% if log.changes.count > 1 %}s{% endif %} <span class="badge badge-secondary">{{ log.changes|dict_keys|format_list }}</span> updated
-                                                {% elif log.action_type == "created" %}
-                                                    was <span class="badge badge-success">created</span>
-                                                {% else %}
-                                                    was <span class="badge badge-danger">deleted</span>
-                                                {% endif %}
-                                                {% if log.changed_by %}
-                                                     by {% if log.changed_by.first_name %}{{ log.changed_by.first_name }} {{ log.changed_by.last_name }}{% else %}{{ log.changed_by.username }}{% endif %}
-                                                {% endif %}
-                                            {% endwith %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade show active mb-3" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
-        </div>
-        <div class="tab-pane fade show active mb-3" id="issues" role="tabpanel" aria-labelledby="issues-tab">
+        <div class="col-md-4">
+            {% if PROJECT.total_tasks_overdue.count > 0 %}
+                <div class="col-xl-12 col-md-12 mb-4">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Task{% if PROJECT.total_tasks_overdue.count > 1 %}s{% endif %} Overdue</div>
+                                    <div class="h2 mb-0 font-weight-bold">{{ PROJECT.total_tasks_overdue.count }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-list-check fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="col-xl-12 col-md-12 mb-4">
+                <div class="card border-left-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} text-uppercase mb-1">Tasks {% if PROJECT.total_tasks == 0 %}Created{% else %}Completed{% endif %}</div>
+                                <div class="h2 mb-0 font-weight-bold">{% if PROJECT.total_tasks > 0 %}{{ PROJECT.total_tasks_completed }}/{% endif %}{{ PROJECT.total_tasks }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-list-check fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-md-12 mb-4">
+                <div class="card border-left-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} text-uppercase mb-1">Issues {% if PROJECT.total_issues == 0 %}Reported{% else %}Resolved{% endif %}</div>
+                                <div class="h2 mb-0 font-weight-bold">{% if project.total_issues > 0 %}{{ PROJECT.total_issues_resolved }}/{% endif %}{{ PROJECT.total_issues }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-circle-exclamation fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h4 class="card-title text-white float-left">Project Activity</h4>
+                </div>
+                <table class="table table-borderless {% if user.profile.dark_mode %}table-dark{% else %}table-light{% endif %} table-hover">
+                    <tbody>
+                    {% for log in PROJECT.get_activity_logs %}
+                        <tr>
+                            <td>
+                                <span class="badge badge-secondary">
+                                    {% now "Y-m-d" as current_date %}
+                                    {% now "w" as current_weekday %}
+                                    {% with log.timestamp|date:"Y-m-d" as log_date %}
+                                        {% with log.timestamp|date:"w" as log_weekday %}
+                                            {% if log_date == current_date %}
+                                                Today {{ log.timestamp|date:"g:i A" }}
+                                            {% elif log_date == current_date|date:"Y-m-d"|add:"-1 day" %}
+                                                Yesterday {{ log.timestamp|date:"g:i A" }}
+                                            {% elif log_date > current_date|date:"Y-m-d"|add:"-7 day" %}
+                                                {{ current_date|date:"Y-m-d"|date:"-log_date"|timesince }} days ago {{ log.timestamp|date:"g:i A" }}
+                                            {% elif log_weekday < current_weekday and log_date > current_date|date:"Y-m-d"|add:"-7 day" %}
+                                                Last Week {{ log.timestamp|date:"g:i A" }}
+                                            {% else %}
+                                                {{ log.timestamp|date:"Y-m-d g:i A" }}
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                </span>
+                            </td>
+                            <td>
+                                {% with log.model_name|get_object:log.object_id as logObject %}
+                                    {{ log.model_name }}{% if log.model_name != "Project" %} "{{ logObject.name }}"{% endif %}
+                                    {% if log.action_type == "updated" and log.changes|length == 1 and log.changes.status %}
+                                        was marked as <span class="badge badge-{{ log.get_status_color }}">{{ logObject.get_status_display }}</span>
+                                    {% elif log.action_type == "updated" %}
+                                        had the value{% if log.changes.count > 1 %}s{% endif %} <span class="badge badge-secondary">{{ log.changes|dict_keys|format_list }}</span> updated
+                                    {% elif log.action_type == "created" %}
+                                        was <span class="badge badge-success">created</span>
+                                    {% else %}
+                                        was <span class="badge badge-danger">deleted</span>
+                                    {% endif %}
+                                    {% if log.changed_by %}
+                                        by {% if log.changed_by.first_name %}{{ log.changed_by.first_name }} {{ log.changed_by.last_name }}{% else %}{{ log.changed_by.username }}{% endif %}
+                                    {% endif %}
+                                {% endwith %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </form>
