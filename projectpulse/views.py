@@ -9,16 +9,17 @@ from django.core.validators import validate_email
 from django.utils.text import slugify
 from django.db.models import Q
 from .models import *
+from .mixins import *
 
 # Create your views here.
-class AdminProjectsView(TemplateView):
+class AdminProjectsView(LoginRequiredMixin, TemplateView):
     template_name = "projectadmin/projects.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["PAGE_TITLE"] = 'All Projects'
         context["PROJECTS"] = Project.objects.all()
         return context
-class AdminProjectDetailView(TemplateView):
+class AdminProjectDetailView(LoginRequiredMixin, TemplateView):
     template_name = "projectadmin/project-detail.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -34,7 +35,7 @@ class AdminProjectDetailView(TemplateView):
             return redirect("admin-projects")
 
         return self.render_to_response(context)
-class AdminProjectEditView(TemplateView):
+class AdminProjectEditView(LoginRequiredMixin, TemplateView):
     template_name = "projectadmin/project-edit.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,7 +75,7 @@ class AdminProjectEditView(TemplateView):
         return self.render_to_response(context)
 
 
-class AdminTaskDetailView(TemplateView):
+class AdminTaskDetailView(LoginRequiredMixin, TemplateView):
     template_name = "projectadmin/task-detail.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -101,7 +102,7 @@ class AdminTaskDetailView(TemplateView):
 
         return self.render_to_response(context)
 
-class ProjectsView(TemplateView):
+class ProjectsView(LoginRequiredMixin, TemplateView):
     template_name = "projectpulse/projects.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -109,4 +110,11 @@ class ProjectsView(TemplateView):
         context["PROJECTS"] = Project.objects.filter(
             Q(owner=self.request.user) | Q(members=self.request.user)
         )
+        return context
+class ProjectDetailView(LoginRequiredMixin, ProjectPermissionRequiredMixin, TemplateView):
+    template_name = "projectpulse/project-detail.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["PROJECT"] = Project.objects.get(pk=self.kwargs.get("id"))
+        context["PAGE_TITLE"] = context["PROJECT"].name
         return context
