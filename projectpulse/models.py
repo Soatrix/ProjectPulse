@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-import os
+import os, markdown2, bleach
 
 def project_image_upload_path(instance, filename):
     # This will upload the image to 'projects/<project_id>/<filename>'
@@ -30,6 +30,11 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+    def description_markdown(self):
+        text = markdown2.markdown(self.description)
+        html = bleach.clean(text)
+        return bleach.linkify(html)
 
     def total_tasks(self):
         return self.tasks.count()
