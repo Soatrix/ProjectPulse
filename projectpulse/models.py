@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 import os, markdown2, bleach, html
 
@@ -49,6 +50,29 @@ class Project(models.Model):
     def total_issues_resolved(self):
         return sum(1 for issue in self.issues.all() if issue.status == "resolved")
 
+    def total_tasks_overdue(self):
+        """Return the total number of overdue tasks for the project."""
+        return self.tasks.filter(due_date__lt=timezone.now().date(), status__in=[Task.Status.NOT_STARTED, Task.Status.IN_PROGRESS]).count()
+
+    def total_tasks_due_today(self):
+        """Return the total number of tasks due today."""
+        return self.tasks.filter(due_date=timezone.now().date()).count()
+
+    def total_tasks_due_this_week(self):
+        """Return the total number of tasks due this week."""
+        today = timezone.now().date()
+        start_of_week = today - timezone.timedelta(days=today.weekday())
+        end_of_week = start_of_week + timezone.timedelta(days=6)
+        return self.tasks.filter(due_date__range=[start_of_week, end_of_week]).count()
+
+    def total_issues_open(self):
+        """Return the total number of open issues for the project."""
+        return self.issues.filter(status=Issue.Status.OPEN).count()
+
+    def total_issues_severity(self, severity):
+        """Return the total number of issues with a given severity."""
+        return self.issues.filter(severity=severity).count()
+
 class ProjectNote(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='notes')
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='project_notes')
@@ -90,6 +114,25 @@ class Task(models.Model):
     def completed_requirements(self):
         return sum(1 for task in self.requirements.all() if task.status in [Task.Status.COMPLETED, Task.Status.CANCELLED, Task.Status.BLOCKED]) + sum(1 for issue in self.issues.all() if issue.status in [Issue.Status.RESOLVED, Issue.Status.CLOSED])
 
+    def is_overdue(self):
+        """Check if the task is overdue."""
+        return self.due_date and self.due_date < timezone.now().date() and self.status not in [Task.Status.COMPLETED, Task.Status.CANCELLED]
+
+    def days_remaining(self):
+        """Return the number of days remaining until the task's due date."""
+        if self.due_date:
+            return (self.due_date - timezone.now().date()).days
+        return None
+
+    def is_due_today(self):
+        """Check if the task is due today."""
+        return self.due_date == timezone.now().date()
+
+    def total_requirements_completed(self):
+        """Return the total number of completed requirements for this task."""
+        return sum(1 for task in self.requirements.all() if task.status == Task.Status.COMPLETED) + \
+               sum(1 for issue in self.issues.all() if issue.status == Issue.Status.RESOLVED)
+
 class TaskNote(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='notes')
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='task_notes')
@@ -129,6 +172,22 @@ class Issue(models.Model):
 
     def __str__(self):
         return self.title
+
+    def is_overdue(self):
+        """Check if the issue is overdue."""
+        return self.updated_at < timezone.now() and self.status not in [Issue.Status.RESOLVED, Issue.Status.CLOSED]
+
+    def days_open(self):
+        """Return the number of days the issue has been open."""
+        return (timezone.now().date() - self.created_at.date()).days
+
+    def is_open(self):
+        """Check if the issue is open."""
+        return self.status == Issue.Status.OPEN
+
+    def total_notes(self):
+        """Return the total number of notes on the issue."""
+        return self.notes.count()
 
 class IssueNote(models.Model):
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='notes')

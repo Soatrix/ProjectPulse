@@ -78,6 +78,23 @@
                     </div>
                 </div>
                 <div class="col-md-4">
+                    {% if PROJECT.total_tasks_overdue.count > 0 %}
+                        <div class="col-xl-12 col-md-12 mb-4">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Tasks {% if PROJECT.total_tasks == 0 %}Created{% else %}Completed{% endif %}</div>
+                                            <div class="h2 mb-0 font-weight-bold">{{ PROJECT.total_tasks_overdue.count }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-list-check fa-2x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                     <div class="col-xl-12 col-md-12 mb-4">
                         <div class="card border-left-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} shadow h-100 py-2">
                             <div class="card-body">
