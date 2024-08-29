@@ -1,4 +1,5 @@
 {% extends "adminpanel/base.html" %}
+{% load model_filters %}
 {% block page_content %}
 <form action="" method="post">
     {% csrf_token %}
@@ -124,6 +125,21 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="card text-dark mb-3">
+                        <div class="card-header">
+                            <h4 class="card-title text-white float-left">Project Activity</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                {% for log in PROJECT.get_activity_logs %}
+                                    {% with log.model_name|get_object:log.object_id as logObject %}
+                                    <li>{{ logObject.name }} was {{ log.action_type }} at {{ log.timestamp }}</li>
+                                    {% endwith %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
