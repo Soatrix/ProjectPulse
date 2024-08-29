@@ -51,7 +51,7 @@
                     <tr>
                         {% load static %}
                         <td>{% if project.logo %}<img style="max-height: 25px;" class="img-fluid" alt="{{ project.name }}" src="{{ project.logo.url }}" />{% endif %}</td>
-                        <td><a href="{% url 'admin-project-detail' id=project.id %}">{{ project.name }}</a></td>
+                        <td><a href="{% url 'project-detail' id=project.id %}">{{ project.name }}</a></td>
                         <td>{% if project.owner.first_name %}{{ project.owner.first_name }} {{ project.owner.last_name }}{% else %}{{ project.username }}{% endif %}</td>
                         <td><span class="badge badge-info">{{ project.members.count }}</span></td>
                         <td><span class="badge badge-secondary">{{ project.start_date }}-{% if project.end_date %}{{ project.end_date }}{% else %}{% if project.status == "completed" %}{{ project.start_date }}{% else %}Unknown{% endif %}{% endif %}</span></td>
