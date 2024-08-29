@@ -77,6 +77,9 @@ class Project(TrackableModel):
     def __str__(self):
         return self.name
 
+    def get_actvitiy_logs(self):
+        return ActivityLog.objects.filter(model_name="Project", object_id=self.id)
+
     def description_markdown(self):
         text = markdown2.markdown(self.description, extras=["cuddled-lists"])
         html_cleaned = bleach.clean(text)
