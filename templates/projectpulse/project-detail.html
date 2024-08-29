@@ -134,7 +134,14 @@
                             <ul class="list-unstyled">
                                 {% for log in PROJECT.get_activity_logs %}
                                     {% with log.model_name|get_object:log.object_id as logObject %}
-                                    <li>{{ log.model_name }} #{{ log.id }}{% if log.action_type == "updated" %} <span class="badge badge-secondary">{{ log.get_changes|format_list }}</span>{% endif %} was {{ log.action_type }} at {{ log.timestamp }}</li>
+                                    <li>
+                                    {{ log.model_name }} "{{ logObject.name }}" was
+                                    {% if log.action_type == "updated" and log.get_changes|length == 1 and log.get_changes.status %}
+                                         was marked as {{ log.get_changes.status.new }}.
+                                    {% else %}
+                                        Something Else
+                                    {% endif %}
+                                    </li>
                                     {% endwith %}
                                 {% endfor %}
                             </ul>
