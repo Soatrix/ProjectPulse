@@ -14,7 +14,7 @@ import json
 class Dashboard404View(TemplateView):
     template_name = "404.html"
 
-class DashboardHome(TemplateView):
+class DashboardHome(LoginRequiredMixin, TemplateView):
     template_name = "panel/dashboard.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
