@@ -1,4 +1,4 @@
-# Project Name: Project Nest
+# Project Nest
 
 ## Description
 Project Nest is a web-based project management tool designed to simplify the management and collaboration of various types of projects. It is tailored for teams and individuals who need an efficient and user-friendly platform to oversee project tasks, monitor progress, and address issues in real-time.
