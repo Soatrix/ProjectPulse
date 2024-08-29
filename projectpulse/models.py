@@ -52,26 +52,25 @@ class Project(models.Model):
 
     def total_tasks_overdue(self):
         """Return the total number of overdue tasks for the project."""
-        return self.tasks.filter(due_date__lt=timezone.now().date(), status__in=[Task.Status.NOT_STARTED, Task.Status.IN_PROGRESS]).count()
+        return self.tasks.filter(due_date__lt=timezone.now().date(), status__in=[Task.Status.NOT_STARTED, Task.Status.IN_PROGRESS])
 
     def total_tasks_due_today(self):
         """Return the total number of tasks due today."""
-        return self.tasks.filter(due_date=timezone.now().date()).count()
+        return self.tasks.filter(due_date=timezone.now().date())
 
     def total_tasks_due_this_week(self):
         """Return the total number of tasks due this week."""
         today = timezone.now().date()
         start_of_week = today - timezone.timedelta(days=today.weekday())
         end_of_week = start_of_week + timezone.timedelta(days=6)
-        return self.tasks.filter(due_date__range=[start_of_week, end_of_week]).count()
-
+        return self.tasks.filter(due_date__range=[start_of_week, end_of_week])
     def total_issues_open(self):
         """Return the total number of open issues for the project."""
-        return self.issues.filter(status=Issue.Status.OPEN).count()
+        return self.issues.filter(status=Issue.Status.OPEN)
 
     def total_issues_severity(self, severity):
         """Return the total number of issues with a given severity."""
-        return self.issues.filter(severity=severity).count()
+        return self.issues.filter(severity=severity)
 
 class ProjectNote(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='notes')

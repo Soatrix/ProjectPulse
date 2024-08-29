@@ -95,6 +95,7 @@
                             </div>
                         </div>
                     {% endif %}
+                    <p>{{ PROJECT.total_tasks_overdue }}</p>
                     <div class="col-xl-12 col-md-12 mb-4">
                         <div class="card border-left-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} shadow h-100 py-2">
                             <div class="card-body">
