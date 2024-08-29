@@ -141,15 +141,15 @@
                                                 {% with log.timestamp|date:"Y-m-d" as log_date %}
                                                 {% with log.timestamp|date:"w" as log_weekday %}
                                                 {% if log_date == current_date %}
-                                                    Today {{ log.timestamp|date:"g:i:s A" }}
+                                                    Today {{ log.timestamp|date:"g:i A" }}
                                                 {% elif log_date == current_date|date:"Y-m-d"|add:"-1 day" %}
-                                                    Yesterday {{ log.timestamp|date:"g:i:s A" }}
+                                                    Yesterday {{ log.timestamp|date:"g:i A" }}
                                                 {% elif log_date > current_date|date:"Y-m-d"|add:"-7 day" %}
-                                                    {{ current_date|date:"Y-m-d"|date:"-log_date"|timesince }} days ago {{ log.timestamp|date:"g:i:s A" }}
+                                                    {{ current_date|date:"Y-m-d"|date:"-log_date"|timesince }} days ago {{ log.timestamp|date:"g:i A" }}
                                                 {% elif log_weekday < current_weekday and log_date > current_date|date:"Y-m-d"|add:"-7 day" %}
-                                                    Last Week {{ log.timestamp|date:"g:i:s A" }}
+                                                    Last Week {{ log.timestamp|date:"g:i A" }}
                                                 {% else %}
-                                                    {{ log.timestamp|date:"Y-m-d g:i:s A" }}
+                                                    {{ log.timestamp|date:"Y-m-d g:i A" }}
                                                 {% endif %}
                                                 {% endwith %}
                                                 {% endwith %}
