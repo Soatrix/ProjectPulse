@@ -136,13 +136,14 @@
                                     <tr>
                                         <td>
                                             <span class="badge badge-secondary">
-                                                {% if log.timestamp|date:"Y-m-d" == now|date:"Y-m-d" %}
-                                                    Today {{ log.timestamp|date:"g:i:s A" }}
-                                                {% else %}
-                                                    {{ log.timestamp|date:"Y-m-d g:i:s A" }}
-                                                {% endif %}
+                                                {% with now as current_date %}
+                                                    {% if log.timestamp|date:"Y-m-d" == current_date|date:"Y-m-d" %}
+                                                        Today {{ log.timestamp|date:"g:i:s A" }}
+                                                    {% else %}
+                                                        {{ log.timestamp|date:"Y-m-d g:i:s A" }}
+                                                    {% endif %}
+                                                {% endwith %}
                                             </span>
-                                            <p>{{ now|date:"Y-m-d" }} {{ log.timestamp|date:"Y-m-d" }}</p>
                                         </td>
                                         <td>
                                             {% with log.model_name|get_object:log.object_id as logObject %}
