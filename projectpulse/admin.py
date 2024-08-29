@@ -28,7 +28,7 @@ class ProjectAdmin(admin.ModelAdmin):
                 object_id=obj.pk,
                 action_type=ActivityLog.ActionType.UPDATED,
                 changed_by=request.user,
-                changes=self.changes
+                changes=self.get_changes(obj)
             )
 
     def get_changes(self, obj):
