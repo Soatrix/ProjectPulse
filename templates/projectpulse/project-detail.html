@@ -134,7 +134,15 @@
                             <tbody>
                                 {% for log in PROJECT.get_activity_logs %}
                                     <tr>
-                                        <td><span class="badge badge-secondary">{{ log.timestamp|date:"Y-m-d g:i:s" }}</span></td>
+                                        <td>
+                                            <span class="badge badge-secondary">
+                                                {% if log.timestamp|date:"Y-m-d" == now|date:"Y-m-d" %}
+                                                    Today {{ log.timestamp|date:"g:i:s A" }}
+                                                {% else %}
+                                                    {{ log.timestamp|date:"Y-m-d g:i:s A" }}
+                                                {% endif %}
+                                            </span>
+                                        </td>
                                         <td>
                                             {% with log.model_name|get_object:log.object_id as logObject %}
                                                 {{ log.model_name }} "{{ logObject.name }}" was
