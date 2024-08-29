@@ -135,12 +135,12 @@
                                 {% for log in PROJECT.get_activity_logs %}
                                     {% with log.model_name|get_object:log.object_id as logObject %}
                                     <li>
-                                    {{ log.model_name }} "{{ logObject.name }}" was
-                                    {% if log.action_type == "updated" and log.get_changes|length == 1 and log.get_changes.status %}
-                                         was marked as {{ log.get_changes.status.new }}.
-                                    {% else %}
-                                        Something Else
-                                    {% endif %}
+                                        {{ log.model_name }} "{{ logObject.name }}" was
+                                        {% if log.action_type == "updated" and log.changes|length == 1 and log.changes.status %}
+                                            marked as {{ log.changes.status.1 }}.
+                                        {% else %}
+                                            Something Else
+                                        {% endif %}
                                     </li>
                                     {% endwith %}
                                 {% endfor %}
