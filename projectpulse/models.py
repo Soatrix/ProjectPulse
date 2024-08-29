@@ -31,6 +31,12 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+    def total_tasks(self):
+        return self.tasks.count()
+
+    def total_tasks_completed(self):
+        return sum(1 for task in self.tasks.all if task.status == "completed")
+
 class ProjectNote(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='notes')
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='project_notes')
