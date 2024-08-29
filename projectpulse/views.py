@@ -103,10 +103,10 @@ class AdminTaskDetailView(TemplateView):
 
 class ProjectsView(TemplateView):
     template_name = "projectpulse/projects.html"
-    def get_context_data(self, request, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["PAGE_TITLE"] = 'All Projects'
         context["PROJECTS"] = Project.objects.filter(
-            Q(owner=request.user) | Q(members=request.user)
+            Q(owner=self.request.user) | Q(members=self.request.user)
         )
         return context
