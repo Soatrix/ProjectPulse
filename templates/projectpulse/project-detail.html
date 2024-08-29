@@ -62,7 +62,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} text-uppercase mb-1">Tasks {% if PROJECT.total_tasks == 0 %}Created{% else %}Completed{% endif %}</div>
-                                        <div class="h2 mb-0 font-weight-bold">{{ PROJECT.total_tasks_completed }}/{{ PROJECT.total_tasks }}</div>
+                                        <div class="h2 mb-0 font-weight-bold">{% if PROJECT.total_tasks > 0 %}{{ PROJECT.total_tasks_completed }}/{% endif %}{{ PROJECT.total_tasks }}</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-list-check fa-2x"></i>
@@ -77,7 +77,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} text-uppercase mb-1">Issues {% if PROJECT.total_issues == 0 %}Reported{% else %}Resolved{% endif %}</div>
-                                        <div class="h2 mb-0 font-weight-bold">{{ PROJECT.total_issues_resolved }}/{{ PROJECT.total_issues }}</div>
+                                        <div class="h2 mb-0 font-weight-bold">{% if project.total_issues > 0 %}{{ PROJECT.total_issues_resolved }}/{% endif %}{{ PROJECT.total_issues }}</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-circle-exclamation fa-2x"></i>
