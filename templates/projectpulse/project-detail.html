@@ -54,7 +54,12 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <p>{{ PROJECT.description }}</p>
+                                    <h6 class="card-title">Description</h6>
+                                    {% if PROJECT.description %}
+                                        <p>{{ PROJECT.description }}</p>
+                                    {% else %}
+                                        <p>This project does not have a description yet.</p>
+                                    {% endif %}
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-floating mb-3">
