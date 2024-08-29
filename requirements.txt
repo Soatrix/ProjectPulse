@@ -1,2 +1,4 @@
 django
 pillow
+markdown2
+bleach
