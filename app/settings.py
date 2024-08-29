@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'panelauth',
     'panel',
     'adminpanel',
-    'mathfilters',
 ]
 
 MIDDLEWARE = [
