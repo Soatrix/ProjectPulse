@@ -143,7 +143,7 @@
                                                     {{ log.timestamp|date:"Y-m-d g:i:s A" }}
                                                 {% endif %}
                                             </span>
-                                            <p>{{ current_date|date:"1: Y-m-d" }} {{ log.timestamp|date:"2: Y-m-d" }}</p>
+                                            <p>{% now "3: Y-m-d" %} {{ current_date|date:"1: Y-m-d" }} {{ log.timestamp|date:"2: Y-m-d" }}</p>
                                         </td>
                                         <td>
                                             {% with log.model_name|get_object:log.object_id as logObject %}
