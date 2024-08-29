@@ -84,7 +84,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Tasks Overdue</div>
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Task{% if PROJECT.total_tasks_overdue.count > 1 %}s{% endif %} Overdue</div>
                                             <div class="h2 mb-0 font-weight-bold">{{ PROJECT.total_tasks_overdue.count }}</div>
                                         </div>
                                         <div class="col-auto">
@@ -95,7 +95,6 @@
                             </div>
                         </div>
                     {% endif %}
-                    <p>{{ PROJECT.total_tasks_overdue }}</p>
                     <div class="col-xl-12 col-md-12 mb-4">
                         <div class="card border-left-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} shadow h-100 py-2">
                             <div class="card-body">
