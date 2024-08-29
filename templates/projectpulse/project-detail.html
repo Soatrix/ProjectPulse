@@ -56,12 +56,12 @@
                                 <div class="col-md-8"></div>
                                 <div class="col-md-4">
                                     <div class="form-floating mb-3">
-                                        <input type="date" class="form-control is-valid" id="start_date" name="start_date" value="{{ PROJECT.start_date|date:"d-m-Y" }}" />
+                                        <input type="date" class="form-control is-valid" id="start_date" name="start_date" value="{{ PROJECT.start_date|date:"d/m/Y" }}" />
                                         <label for="start_date">Date Started</label>
                                     </div>
                                     {% if PROJECT.end_date %}
                                         <div class="form-floating mb-3">
-                                            <input type="date" class="form-control {% if PROJECT.end_date|date:"Y-m-d" < current_date and PROJECT.status != "completed" %}is-invalid{% endif %}" id="end_date" name="end_date" value="{{ PROJECT.end_date|date:"d-m-Y" }}" />
+                                            <input type="date" class="form-control {% if PROJECT.end_date|date:"Y-m-d" < current_date and PROJECT.status != "completed" %}is-invalid{% endif %}" id="end_date" name="end_date" value="{{ PROJECT.end_date|date:"d/m/Y" }}" />
                                             <label for="end_date">Date {% if PROJECT.end_date|date:"Y-m-d" > current_date %}Ending{% else %}Ended{% endif %}</label>
                                         </div>
                                     {% endif %}
