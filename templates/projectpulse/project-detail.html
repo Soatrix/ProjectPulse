@@ -157,13 +157,15 @@
                                         </td>
                                         <td>
                                             {% with log.model_name|get_object:log.object_id as logObject %}
-                                                {{ log.model_name }} "{{ logObject.name }}" was
+                                                {{ log.model_name }} "{{ logObject.name }}"
                                                 {% if log.action_type == "updated" and log.changes|length == 1 and log.changes.status %}
-                                                    marked as <span class="badge badge-{{ log.get_status_color }}">{{ logObject.get_status_display }}</span>
+                                                    was marked as <span class="badge badge-{{ log.get_status_color }}">{{ logObject.get_status_display }}</span>
+                                                {% elif log.action_type == "updated" %}
+                                                    had the values <span class="badge badge-secondary">{{ log.changes.items|format_list }}</span>
                                                 {% elif log.action_type == "created" %}
-                                                    <span class="badge badge-success">created</span>
+                                                    was <span class="badge badge-success">created</span>
                                                 {% else %}
-                                                    <span class="badge badge-danger">deleted</span>
+                                                    was <span class="badge badge-danger">deleted</span>
                                                 {% endif %}
                                             {% endwith %}
                                         </td>
