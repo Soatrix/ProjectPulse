@@ -57,7 +57,7 @@
                                     <h5 class="card-title text-dark">Description</h5>
                                     {% if PROJECT.description %}
                                         {% autoescape off %}
-                                            {{ PROJECT.description_markdown|safe }}
+                                            {{ PROJECT.description_markdown }}
                                         {% endautoescape %}
                                     {% else %}
                                         <p>This project does not have a description yet.</p>
