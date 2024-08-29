@@ -56,7 +56,7 @@
                                 <div class="col-md-8">
                                     <h5 class="card-title text-dark">Description</h5>
                                     {% if PROJECT.description %}
-                                        {{ PROJECT.description_markdown|safe }}
+                                        <p>{{ PROJECT.description_markdown }}</p>
                                     {% else %}
                                         <p>This project does not have a description yet.</p>
                                     {% endif %}
