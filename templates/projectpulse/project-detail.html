@@ -140,14 +140,8 @@
                                         {% with log.timestamp|date:"w" as log_weekday %}
                                             {% if log_date == current_date %}
                                                 Today {{ log.timestamp|date:"g:i A" }}
-                                            {% elif log_date == now|date:"Y-m-d"|add:"-1 day" %}
-                                                Yesterday {{ log.timestamp|date:"g:i A" }}
-                                            {% elif log.timestamp > now|date:"Y-m-d"|add:"-7 day" %}
-                                                {{ log.timestamp|timesince:now }} ago {{ log.timestamp|date:"g:i A" }}
-                                            {% elif log_weekday < current_weekday and log.timestamp > now|date:"Y-m-d"|add:"-7 day" %}
-                                                Last Week {{ log.timestamp|date:"g:i A" }}
                                             {% else %}
-                                                {{ log.timestamp|timesince:current_date }} {{ log.timestamp|date:"Y-m-d g:i A" }}
+                                                {{ log.timestamp|date:"Y-m-d g:i A" }}
                                             {% endif %}
                                         {% endwith %}
                                     {% endwith %}
