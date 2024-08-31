@@ -20,10 +20,13 @@
                 <a class="nav-link active" id="dashboard-tab" href="{% url 'project-detail' id=PROJECT.id %}">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="tasks-tab" data-toggle="tab" href="#tasks" role="tab" aria-controls="tasks" aria-selected="false">Tasks</a>
+                <a class="nav-link" href="#">Tasks</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="issues-tab" data-toggle="tab" href="#issues" role="tab" aria-controls="issues" aria-selected="false">Issues</a>
+                <a class="nav-link" href="#">Issues</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'project-settings' id=PROJECT.id %}">Settings</a>
               </li>
             </ul>
         </div>

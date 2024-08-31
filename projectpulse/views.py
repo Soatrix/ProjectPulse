@@ -161,3 +161,22 @@ class ProjectCreateView(LoginRequiredMixin, TemplateView):
                     return redirect("project-detail", id=project.id)
 
         return self.render_to_response(context)
+
+class ProjectSettingsView(LoginRequiredMixin, ProjectPermissionRequiredMixin, TemplateView):
+    template_name = "projectpulse/project-settings.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["PROJECT"] = Project.objects.get(pk=self.kwargs.get("id"))
+        context["PAGE_TITLE"] = context["PROJECT"].name + " Settings"
+        return context
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        if "update-description" in request.POST:
+            description = request.POST.get("description")
+            context["PROJECT"].description = description
+            context["PROJECT"].save()
+            context["success"] = True
+            context["message"] = "The projects description was successfully updated."
+
+        return self.render_to_response(context)
