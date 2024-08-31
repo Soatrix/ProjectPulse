@@ -46,3 +46,7 @@ def format_list(value):
         return str(value[0])
 
     return ', '.join(map(str, value[:-1])) + ' & ' + str(value[-1])
+
+@register.filter
+def reverse_slugify(string: str):
+    return string.replace("-", " ").replace("_", " ").title()
