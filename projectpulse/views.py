@@ -178,5 +178,25 @@ class ProjectSettingsView(LoginRequiredMixin, ProjectPermissionRequiredMixin, Te
             context["PROJECT"].save()
             context["success"] = True
             context["message"] = "The projects description was successfully updated."
+        elif "mark-completed" in request.POST:
+            context["PROJECT"].status = "completed"
+            context["PROJECT"].save()
+            context["success"] = True
+            context["message"] = "The project was successfully marked as completed."
+        elif "mark-cancelled" in request.POST:
+            context["PROJECT"].status = "cancelled"
+            context["PROJECT"].save()
+            context["success"] = True
+            context["message"] = "The project was successfully marked as cancelled."
+        elif "mark-on-hold" in request.POST:
+            context["PROJECT"].status = "on_hold"
+            context["PROJECT"].save()
+            context["success"] = True
+            context["message"] = "The project was successfully marked as on hold."
+        elif "mark-in-progress" in request.POST:
+            context["PROJECT"].status = "in_progress"
+            context["PROJECT"].save()
+            context["success"] = True
+            context["message"] = "The project was successfully marked as in progress."
 
         return self.render_to_response(context)

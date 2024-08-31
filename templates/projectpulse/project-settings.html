@@ -63,6 +63,27 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-5">
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h4 class="card-title text-white float-left">Control Panel</h4>
+                </div>
+                <div class="card-body">
+                    {% if PROJECT.status != "completed" %}
+                        <button class="btn btn-success btn-block" name="mark-completed">Mark Project Completed</button>
+                    {% endif %}
+                    {% if PROJECT.status != "in_progress" %}
+                        <button class="btn btn-success btn-block" name="mark-in-progress">{% if PROJECT.status == "not_started" %}Start Project{% else %}{% if PROJECT.status == "cancelled" %}Restart{% else %}Reopen{% endif %} Project{% endif %}</button>
+                    {% endif %}
+                    {% if PROJECT.status == "in_progress" or PROJECT.status == "on_hold" %}
+                        <button class="btn btn-danger btn-block" name="mark-cancelled">Cancel Project</button>
+                    {% endif %}
+                    {% if PROJECT.status == "in_progress" %}
+                        <button class="btn btn-warning btn-block" name="mark-on-hold">Hold Project</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 {% endblock %}
