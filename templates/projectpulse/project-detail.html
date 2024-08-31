@@ -55,7 +55,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <h5 class="card-title text-dark font-weight-bold">Description</h5>
                             {% if PROJECT.description %}
                                 {{ PROJECT.description_markdown|safe }}
@@ -63,47 +63,28 @@
                                 <p>This project does not have a description yet.</p>
                             {% endif %}
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-floating mb-3">
-                                <input type="date" class="form-control {% if PROJECT.status != "not_started" %}is-valid{% endif %}" id="start_date" name="start_date" value="{{ PROJECT.start_date|date:"Y-m-d" }}" disabled="disabled"/>
-                                <label for="start_date">Date Started</label>
-                            </div>
-                            {% if PROJECT.end_date %}
-                                <div class="form-floating mb-3">
-                                    <input type="date" class="form-control {% if PROJECT.end_date|date:"Y-m-d" < current_date and PROJECT.status != "completed" %}is-invalid{% endif %}" id="end_date" name="end_date" value="{{ PROJECT.end_date|date:"Y-m-d" }}" disabled="disabled"/>
-                                    <label for="end_date">Date {% if PROJECT.end_date|date:"Y-m-d" > current_date %}Ending{% else %}Ended{% endif %}</label>
-                                </div>
-                            {% endif %}
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            {% if PROJECT.total_tasks_overdue.count > 0 %}
-                <div class="col-xl-12 col-md-12 mb-4">
-                    <div class="card border-left-danger shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Task{% if PROJECT.total_tasks_overdue.count > 1 %}s{% endif %} Overdue</div>
-                                    <div class="h2 mb-0 font-weight-bold">{{ PROJECT.total_tasks_overdue.count }}</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-list-check fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control {% if PROJECT.status != "not_started" %}is-valid{% endif %}" id="start_date" name="start_date" value="{{ PROJECT.start_date|date:"Y-m-d" }}" disabled="disabled"/>
+                <label for="start_date">Date Started</label>
+            </div>
+            {% if PROJECT.end_date %}
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control {% if PROJECT.end_date|date:"Y-m-d" < current_date and PROJECT.status != "completed" %}is-invalid{% endif %}" id="end_date" name="end_date" value="{{ PROJECT.end_date|date:"Y-m-d" }}" disabled="disabled"/>
+                    <label for="end_date">Date {% if PROJECT.end_date|date:"Y-m-d" > current_date %}Ending{% else %}Ended{% endif %}</label>
                 </div>
             {% endif %}
-            <div class="col-xl-12 col-md-12 mb-4">
-                <div class="card border-left-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} shadow h-100 py-2">
+            {% if PROJECT.total_tasks_overdue.count > 0 %}
+                <div class="card border-left-danger shadow py-2 mb-3">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} text-uppercase mb-1">Tasks {% if PROJECT.total_tasks == 0 %}Created{% else %}Completed{% endif %}</div>
-                                <div class="h2 mb-0 font-weight-bold">{% if PROJECT.total_tasks > 0 %}{{ PROJECT.total_tasks_completed }}/{% endif %}{{ PROJECT.total_tasks }}</div>
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Task{% if PROJECT.total_tasks_overdue.count > 1 %}s{% endif %} Overdue</div>
+                                <div class="h2 mb-0 font-weight-bold">{{ PROJECT.total_tasks_overdue.count }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-list-check fa-2x"></i>
@@ -111,18 +92,29 @@
                         </div>
                     </div>
                 </div>
+            {% endif %}
+            <div class="card border-left-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} shadow py-2 mb-3">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-{% if PROJECT.total_tasks == 0 %}warning{% elif PROJECT.total_tasks_completed == PROJECT.total_tasks %}success{% else %}warning{% endif %} text-uppercase mb-1">Tasks {% if PROJECT.total_tasks == 0 %}Created{% else %}Completed{% endif %}</div>
+                            <div class="h2 mb-0 font-weight-bold">{% if PROJECT.total_tasks > 0 %}{{ PROJECT.total_tasks_completed }}/{% endif %}{{ PROJECT.total_tasks }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-list-check fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-xl-12 col-md-12 mb-4">
-                <div class="card border-left-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} text-uppercase mb-1">Issues {% if PROJECT.total_issues == 0 %}Reported{% else %}Resolved{% endif %}</div>
-                                <div class="h2 mb-0 font-weight-bold">{% if project.total_issues > 0 %}{{ PROJECT.total_issues_resolved }}/{% endif %}{{ PROJECT.total_issues }}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-circle-exclamation fa-2x"></i>
-                            </div>
+            <div class="card border-left-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} shadow py-2 mb-3">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-{% if PROJECT.total_issues_resolved == PROJECT.total_issues %}success{% else %}danger{% endif %} text-uppercase mb-1">Issues {% if PROJECT.total_issues == 0 %}Reported{% else %}Resolved{% endif %}</div>
+                            <div class="h2 mb-0 font-weight-bold">{% if project.total_issues > 0 %}{{ PROJECT.total_issues_resolved }}/{% endif %}{{ PROJECT.total_issues }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-circle-exclamation fa-2x"></i>
                         </div>
                     </div>
                 </div>
