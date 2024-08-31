@@ -8,5 +8,6 @@ urlpatterns = [
     path('admin/projects/tasks/<int:id>/', AdminTaskDetailView.as_view(), name="admin-task-detail"),
 
     path('projects/', ProjectsView.as_view(), name="projects"),
+    path('projects/new/', ProjectCreateView.as_view(), name="project-create"),
     path('projects/view/<int:id>/', ProjectDetailView.as_view(), name="project-detail"),
 ]

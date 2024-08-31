@@ -4,7 +4,7 @@
     {% csrf_token %}
     <div class="row d-sm-flex align-items-center justify-content-between">
         <div class="col-md-12">
-            <h1 class="h3 mb-0 text-dark"><i class="fas fa-diagram-project"></i> {{ PAGE_TITLE }}</h1>
+            <h1 class="h3 mb-0 text-dark"><i class="fas fa-diagram-project"></i> {{ PAGE_TITLE }} <a href="{% url 'project-create' %}" class="btn btn-info float-right"><i class="fas fa-plus"></i> Create Project</a></h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'dashboard-home' %}">Dashboard</a></li>

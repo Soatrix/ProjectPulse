@@ -118,3 +118,46 @@ class ProjectDetailView(LoginRequiredMixin, ProjectPermissionRequiredMixin, Temp
         context["PROJECT"] = Project.objects.get(pk=self.kwargs.get("id"))
         context["PAGE_TITLE"] = context["PROJECT"].name
         return context
+
+class ProjectCreateView(LoginRequiredMixin, TemplateView):
+    template_name = "projectpulse/project-create.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["PAGE_TITLE"] = "Create Project"
+        return context
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        if "create" in request.POST:
+            requiredFields = ["name", "start_date"]
+            fields = ["name", "start_date", "description", "logo"]
+            started = False
+            for field in fields:
+                if field not in request.POST and field in requiredFields:
+                    if not started:
+                        started = True
+                        context["error"] = "<ul>"
+                    context["error"] = context["error"] + f"<li>{field} is required."
+                elif field in request.POST and field in requiredFields and request.POST.get(field) == "":
+                    if not started:
+                        context["error"] = "<ul>"
+                        started = True
+                    context["error"] = context["error"] + f"<li>The field \"" + field.replace("-", " ").replace("_", " ").title() + "\" is required.</li>"
+            if started:
+                context["error"] = context["error"] + "</ul>"
+            saveRequired = False
+            if not "error" in context:
+                project, created = Project.objects.get_or_create(
+                    name=request.POST.get("name"),
+                    description=request.POST.get("description"),
+                    start_date=request.POST.get("start_date"),
+                    owner=request.user,
+                    logo=request.POST.get("logo")
+                )
+                if not created:
+                    context["success"] = False
+                    context["error"] = "A project with this name already exists, you can view it <a href=\"{% url 'project-detail' id=" + project.id + " %}\">here</a>."
+                else:
+                    return redirect("project-detail", id=project.id)
+
+        return self.render_to_response(context)
