@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 import os, markdown2, bleach, html
+import datetime
+from django.core.serializers.json import DjangoJSONEncoder
 
 class ActivityLog(models.Model):
     class ActionType(models.TextChoices):
@@ -69,6 +71,11 @@ class TrackableModel(models.Model):
                 old_value = getattr(old_instance, field_name)
                 new_value = getattr(self, field_name)
                 if old_value != new_value:
+                    # Handle date serialization
+                    if isinstance(old_value, (datetime.date, datetime.datetime)):
+                        old_value = old_value.isoformat()
+                    if isinstance(new_value, (datetime.date, datetime.datetime)):
+                        new_value = new_value.isoformat()
                     changes[field_name] = {'old': old_value, 'new': new_value}
             if changes:
                 ActivityLog.objects.create(
