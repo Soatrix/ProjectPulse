@@ -70,6 +70,24 @@
                     {% endif %}
                 </div>
             </div>
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h4 class="card-title text-white float-left">Project Timeline</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control {% if PROJECT.status != "not_started" %}is-valid{% endif %}" id="start_date" name="start_date" value="{{ PROJECT.start_date|date:"Y-m-d" }}"/>
+                        <label for="start_date">Date Started</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control {% if PROJECT.end_date|date:"Y-m-d" < current_date and PROJECT.status != "completed" %}is-invalid{% endif %}" id="end_date" name="end_date" value="{{ PROJECT.end_date|date:"Y-m-d" }}"/>
+                        <label for="end_date">Date {% if PROJECT.end_date|date:"Y-m-d" > current_date %}Ending{% else %}Ended{% endif %}</label>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" name="update-timeline" class="btn btn-info float-right">Update Timeline</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>

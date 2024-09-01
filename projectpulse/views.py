@@ -9,6 +9,7 @@ from django.core.validators import validate_email
 from django.utils.text import slugify
 from django.db.models import Q
 from .models import *
+from datetime import datetime
 from .mixins import *
 
 # Create your views here.
@@ -174,10 +175,30 @@ class ProjectSettingsView(LoginRequiredMixin, ProjectPermissionRequiredMixin, Te
 
         if "update-description" in request.POST:
             description = request.POST.get("description")
-            context["PROJECT"].description = description
-            context["PROJECT"].save()
-            context["success"] = True
-            context["message"] = "The projects description was successfully updated."
+            if description != context["PROJECT"].description:
+                context["PROJECT"].description = description
+                context["PROJECT"].save()
+                context["success"] = True
+                context["message"] = "The projects description was successfully updated."
+        elif "update-timeline" in request.POST:
+            start_date = datetime.strptime(request.POST.get("start_date"), "%Y-%m-%d").date()
+            end_date = request.POST.get("end_date")
+
+            saveRequired = False
+            if context["PROJECT"].start_date != start_date.isoformat():
+                context["PROJECT"].start_date = start_date.isoformat()
+                saveRequired = True
+
+            if end_date != "":
+                end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+                if context["PROJECT"].end_date != end_date.isoformat():
+                    context["PROJECT"].end_date = end_date.isoformat()
+                    saveRequired = True
+
+            if saveRequired:
+                context["PROJECT"].save()
+                context["success"] = True
+                context["message"] = "The project's timeline was successfully updated."
         elif "mark-completed" in request.POST:
             context["PROJECT"].status = "completed"
             context["PROJECT"].save()
