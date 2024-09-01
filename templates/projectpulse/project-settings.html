@@ -3,36 +3,7 @@
 {% block page_content %}
 <form action="" method="post">
     {% csrf_token %}
-    <div class="row d-sm-flex align-items-center justify-content-between mb-4">
-        <div class="col-md-5">
-            <h1 class="h3 mb-0 text-dark"><i class="fas fa-diagram-project"></i> {{ PAGE_TITLE }}</h1>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'dashboard-home' %}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'projects' %}">Projects</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ PROJECT.name }}</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="col-md-7">
-            {% include "projectpulse/project-header.html" %}
-        </div>
-        {% if success %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Project Updated!</strong><br> {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% elif error %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error!</strong><br>{{ error|safe }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endif %}
-    </div>
+    {% include "projectpulse/project-header.html" %}
     <div class="row">
         <div class="col-md-7">
             <div class="card text-dark mb-3">

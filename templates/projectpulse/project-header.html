@@ -1,14 +1,35 @@
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" id="dashboard-tab" href="{% url 'project-detail' id=PROJECT.id %}">Dashboard</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Tasks</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Issues</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'project-settings' id=PROJECT.id %}">Settings</a>
-    </li>
-</ul>
+<div class="row d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="col-md-5">
+        <h1 class="h3 mb-0 text-dark"><i class="fas fa-diagram-project"></i> {{ PAGE_TITLE }}</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard-home' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'projects' %}">Projects</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ PROJECT.name }}</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="col-md-7">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            {% url 'project-detail' id=PROJECT.id as url %}<li class="nav-item {% if request.path == url %}active{% endif %}"><a class="nav-link" href="{{ url }}">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Tasks</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Issues</a></li>
+            {% url 'project-settings' id=PROJECT.id as url %}<li class="nav-item"><a class="nav-link {% if request.path == url %}active{% endif %}" href="{{ url }}">Settings</a></li>
+        </ul>
+        </div>
+        {% if success %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Project Updated!</strong><br> {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% elif error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong><br>{{ error|safe }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+    </div>
