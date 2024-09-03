@@ -221,3 +221,95 @@ class ProjectSettingsView(LoginRequiredMixin, ProjectPermissionRequiredMixin, Te
             context["message"] = "The project was successfully marked as in progress."
 
         return self.render_to_response(context)
+
+class ProjectTasksView(LoginRequiredMixin, ProjectPermissionRequiredMixin, TemplateView):
+    template_name = "projectpulse/project-tasks.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["PROJECT"] = Project.objects.get(pk=self.kwargs.get("id"))
+        context["PAGE_TITLE"] = context["PROJECT"].name + " Tasks"
+        return context
+
+class ProjectTaskDetailView(LoginRequiredMixin, TemplateView):
+    template_name = "projectpulse/task-detail.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["PROJECT"] = Project.objects.get(pk=self.kwargs.get("id"))
+        context["TASK"] = Task.objects.get(pk=self.kwargs.get("task"))
+        context["STATUSES"] = Task.Status
+        context["PAGE_TITLE"] = context["TASK"].name
+        return context
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        if "mark-complete" in request.POST:
+            context["TASK"].status = "completed"
+            context["TASK"].save()
+            context["success"] = True
+            context["message"] = "The task was successfully marked as completed."
+        elif "mark-started" in request.POST:
+            if context["TASK"].status == "completed" or context["TASK"].status == "cancelled":
+                context["message"] = "The task was successfully reopened."
+            else:
+                context["context"] = "The task was successfully marked as in progress."
+            context["TASK"].status = "in_progress"
+            context["TASK"].save()
+            context["success"] = True
+
+        return self.render_to_response(context)
+class ProjectTaskCreateView(LoginRequiredMixin, TemplateView):
+    template_name = "projectpulse/task-create.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["PROJECT"] = Project.objects.get(pk=self.kwargs.get("id"))
+        context["STATUSES"] = Task.Status
+        context["PAGE_TITLE"] = "New Task"
+        return context
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        if "create" in request.POST:
+            requiredFields = ["name", "start_date"]
+            fields = ["name", "start_date", "description", "end_date"]
+            started = False
+            for field in fields:
+                if field not in request.POST and field in requiredFields:
+                    if not started:
+                        started = True
+                        context["error"] = "<ul>"
+                    context["error"] = context["error"] + f"<li>{field} is required."
+                elif field in request.POST and field in requiredFields and request.POST.get(field) == "":
+                    if not started:
+                        context["error"] = "<ul>"
+                        started = True
+                    context["error"] = context["error"] + f"<li>The field \"" + field.replace("-", " ").replace("_", " ").title() + "\" is required.</li>"
+            if started:
+                context["error"] = context["error"] + "</ul>"
+            if not "error" in context:
+                task, created = Task.objects.get_or_create(
+                    project=context["PROJECT"],
+                    name=request.POST.get("name"),
+                    assignee=request.user,
+                    description=request.POST.get("description"),
+                    status="not_started",
+                    start_date=request.POST.get("start_date")
+                )
+                if not created:
+                    context["success"] = False
+                    context["error"] = "A task with this name already exists. Please check your input and try again."
+                else:
+                    if "requirements" in request.POST:
+                        requirementTasks = []
+                        for requirement in request.POST.getlist("requirements"):
+                            requirementTask = Task.objects.get(pk=int(requirement))
+                            requirementTasks.append(requirementTask)
+                        task.requirements.set(requirementTasks)
+                        task.save()
+
+                    end_date = request.POST.get("end_date")
+                    if end_date != "":
+                        task.end_date = end_date
+                        task.save()
+                    return redirect("project-task-detail", id=context["PROJECT"].id, task=task.id)
+
+        return self.render_to_response(context)

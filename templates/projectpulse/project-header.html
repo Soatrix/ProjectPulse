@@ -11,10 +11,11 @@
     </div>
     <div class="col-md-7">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-            {% url 'project-detail' id=PROJECT.id as url %}<li class="nav-item {% if request.path == url %}active{% endif %}"><a class="nav-link" href="{{ url }}">Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Tasks</a></li>
+            {% url 'project-detail' id=PROJECT.id as project_url %}<li class="nav-item"><a class="nav-link {% if request.path == project_url %}active{% endif %}" href="{{ project_url }}">Dashboard</a></li>
+            {% url 'project-tasks' id=PROJECT.id as tasks_url %}{% url 'project-task-detail' id=PROJECT.id task=TASK.id as task_detail_url %}{% url 'project-task-create' id=PROJECT.id as task_create_url %}<li class="nav-item"><a class="nav-link {% if request.path == tasks_url or request.path == task_detail_url or request.path == task_create_url %}active{% endif %}" href="{{ tasks_url }}">Tasks</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Issues</a></li>
-            {% url 'project-settings' id=PROJECT.id as url %}<li class="nav-item"><a class="nav-link {% if request.path == url %}active{% endif %}" href="{{ url }}">Settings</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Notes</a></li>
+            {% url 'project-settings' id=PROJECT.id as settings_url %}<li class="nav-item"><a class="nav-link {% if request.path == settings_url %}active{% endif %}" href="{{ settings_url }}">Settings</a></li>
         </ul>
         </div>
         {% if success %}

@@ -1,0 +1,130 @@
+{% extends "adminpanel/base.html" %}
+{% block page_content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {% include "projectpulse/project-header.html" %}
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h5 class="card-title float-left">Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="project-name">Task Name</label>
+                        <input class="form-control" name="name" id="name" value="{{ TASK.name }}" disabled="disabled"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Task Description</label>
+                        <textarea class="form-control" name="description" id="description" rows="10" disabled="disabled">{{ TASK.description }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Control Panel</h5>
+                </div>
+                <div class="card-body">
+                    {% if TASK.completed_requirements == TASK.total_requirements %}
+                        {% if TASK.status == "not_started" %}
+                            <button type="submit" name="mark-started" class="btn btn-outline-success btn-block">Start Task</button>
+                        {% elif TASK.status != "in_progress" %}
+                            <button type="submit" name="mark-started" class="btn btn-outline-warning btn-block">Reopen Task</button>
+                        {% endif %}
+                        {% if TASK.status != "completed" %}
+                            <button type="submit" name="mark-complete" class="btn btn-outline-success btn-block">Complete Task</button>
+                        {% endif %}
+                        <button type="submit" name="mark-blocked" class="btn btn-outline-danger btn-block">Block Task</button>
+                        <button type="submit" name="mark-cancelled" class="btn btn-outline-danger btn-block">Cancel Task</button>
+                    {% else %}
+                        <p>This task has unmet requirements. Please complete all the necessary requirements to manage this task.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h5 class="card-title float-left">Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <input class="form-control bg-{% if TASK.status == "not_started" or TASK.status == "blocked" or TASK.status == "cancelled" %}danger{% elif TASK.status == "in_progress" or TASK.status == "on_hold" %}warning{% else %}success{% endif %}" name="project-status" id="project-status" value="{{ TASK.get_status_display }}" disabled="disabled"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Task Started</label>
+                        <input class="form-control" name="start_date" id="start_date" value="{{ TASK.start_date|date:"Y-m-d" }}" disabled="disabled" />
+                    </div>
+                    <div class="form-group">
+                        {% now "Y-m-d" as current_date %}
+                        <label for="end_date">
+                            Task
+                            {% if TASK.end_date %}
+                                {% if TASK.end_date|date:"Y-m-d" > current_date %}
+                                    Due Date
+                                {% else %}
+                                    Overdue
+                                {% endif %}
+                            {% else %}
+                                {% if PROJECT.status == "completed" %}
+                                    Overdue
+                                {% else %}
+                                    Due Date
+                                {% endif %}
+                            {% endif %}
+                        </label>
+                        <input class="form-control" name="end_date" id="end_date" value="{% if PROJECT.end_date %}{{ PROJECT.end_date }}{% else %}{% if PROJECT.status == "completed" %}{{ PROJECT.start_date }}{% else %}Unknown{% endif %}{% endif %}" disabled="disabled" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card text-dark mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Task Requirements</h5>
+                </div>
+                <table class="table table-borderless {% if user.profile.dark_mode %}table-dark{% else %}table-light{% endif %} table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Assignee</th>
+                            <th scope="col">Timeline</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Requirements</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if TASK.requirements.count == 0 %}
+                            <tr>
+                                <td></td>
+                                <td>No tasks have been created for this project yet.</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% else %}
+                            {% for task in TASK.requirements.all|dictsort:"id" %}
+                                <tr>
+                                    <td>{{ task.name }}</td>
+                                    <td>{{ task.description }}</td>
+                                    <td><span class="badge badge-info"><a href="{% url 'admin-user-detail' id=task.assignee.id %}">{{ task.assignee.username }}</a></span></td>
+                                    <td><span class="badge badge-secondary">{{ task.start_date }}-{% if task.end_date %}{{ task.end_date }}{% else %}{% if task.status == "completed" %}{{ task.start_date }}{% else %}Unknown{% endif %}{% endif %}</span></td>
+                                    <td><span class="badge badge-{% if task.status == "not_started" or task.status == "blocked" or task.status == "cancelled" %}danger{% elif task.status == "in_progress" or task.status == "on_hold" %}warning{% else %}success{% endif %}">{% if task.completed_requirements == task.total_requirements %}{{ task.get_status_display }}{% else %}Unmet Requirements{% endif %}</span></td>
+                                    <td class="text-center"><span class="badge badge-{% if task.total_requirements == 0 %}secondary{% elif task.completed_requirements == task.total_requirements %}success{% else %}danger{% endif %}">{{ task.completed_requirements }}/{{ task.total_requirements }}</span></td>
+                                    <td><a href="{% url 'admin-task-detail' id=task.id %}" class="btn btn-info btn-sm"><i class="fas fa-wrench fa-sm"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
