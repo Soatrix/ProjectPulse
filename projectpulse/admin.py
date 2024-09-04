@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, ProjectNote, Task, TaskNote, Issue, IssueNote, ActivityLog
+from .models import *
 
 class ProjectNoteInline(admin.TabularInline):
     model = ProjectNote
