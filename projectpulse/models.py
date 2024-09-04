@@ -102,6 +102,7 @@ class Project(TrackableModel):
         ON_HOLD = 'on_hold', 'On Hold'
         CANCELLED = 'cancelled', 'Cancelled'
 
+    organization = models.ForeignKey("Organization", on_delete=models.SET_NULL, null=True, blank=True, related_name='projects')
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_projects')
@@ -308,6 +309,22 @@ class IssueNote(models.Model):
 
     def __str__(self):
         return f'Note by {self.author} on {self.issue.title}'
+
+def organization_image_upload_path(instance, filename):
+    # This will upload the image to 'organizations/<project_id>/<filename>'
+    return os.path.join('static', 'organizations', str(instance.id), filename)
+
+class Organization(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_organizations')
+    members = models.ManyToManyField(User, related_name='organizations', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    logo = models.ImageField(upload_to=organization_image_upload_path, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
 @receiver(post_save, sender=Project)
 @receiver(post_save, sender=Task)

@@ -40,3 +40,7 @@ class ActivityLogAdmin(admin.ModelAdmin):
     search_fields = ('model_name', 'object_id', 'action_type', 'changed_by__username')
     list_filter = ('action_type', 'timestamp')
     readonly_fields = ('model_name', 'object_id', 'action_type', 'changed_by', 'timestamp', 'changes')
+
+@admin.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    list_display = ("name", "owner", "created_at")
