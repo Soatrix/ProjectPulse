@@ -1,4 +1,5 @@
 from django.db import models
+from projectpulse.models import Project
 from django.contrib.auth.models import User
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
@@ -8,6 +9,9 @@ class UserProfile(models.Model):
     theme = models.ForeignKey('Theme', on_delete=models.CASCADE)
     dark_mode = models.BooleanField(default=False)
     date_of_birth = models.DateField(null=True, blank=True)
+
+    # Project Fields
+    active_project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True, related_name="active_users")
 
     def __str__(self):
         return self.user.username
