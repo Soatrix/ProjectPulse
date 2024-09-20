@@ -164,18 +164,18 @@ class Project(TrackableModel):
 
     def total_tasks_overdue(self):
         """Return the total number of overdue tasks for the project."""
-        return self.tasks.filter(due_date__lt=timezone.now().date(), status__in=[Task.Status.NOT_STARTED, Task.Status.IN_PROGRESS])
+        return self.tasks.filter(due_date__is_null=False, due_date__lt=timezone.now().date(), status__in=[Task.Status.NOT_STARTED, Task.Status.IN_PROGRESS])
 
     def total_tasks_due_today(self):
         """Return the total number of tasks due today."""
-        return self.tasks.filter(due_date=timezone.now().date())
+        return self.tasks.filter(due_date__is_null=False, due_date=timezone.now().date())
 
     def total_tasks_due_this_week(self):
         """Return the total number of tasks due this week."""
         today = timezone.now().date()
         start_of_week = today - timezone.timedelta(days=today.weekday())
         end_of_week = start_of_week + timezone.timedelta(days=6)
-        return self.tasks.filter(due_date__range=[start_of_week, end_of_week])
+        return self.tasks.filter(due_date__is_null=False, due_date__range=[start_of_week, end_of_week])
     def total_issues_open(self):
         """Return the total number of open issues for the project."""
         return self.issues.filter(status=Issue.Status.OPEN)
